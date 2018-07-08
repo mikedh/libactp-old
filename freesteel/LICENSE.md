@@ -1,8 +1,6 @@
-
-
 Freesteel Computer Aided Manufacture Algorithms 
 is released under the General Public License 
-(see gpl.txt which should be with this distribution).  
+(see GPL.md which should be with this distribution).  
 
 For better integration, certain lower level 
 functions and classes may be re-released under 

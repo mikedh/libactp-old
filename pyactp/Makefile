@@ -6,12 +6,12 @@ HOME	= .
 CXX     = g++
 CC      = gcc
 LD      = g++
-LDFLAGS = -shared -rdynamic `python-config --ldflags`
-LIBS    = -lstdc++ `python-config --libs`
-CFLAGS  = -Wall -I/usr/include `python-config --includes` -I./ -I../freesteel/src -g -fPIC
+LDFLAGS = -shared -rdynamic `python3-config --ldflags`
+LIBS    = -lstdc++ `python3-config --libs`
+CFLAGS  = -Wall -I/usr/include `python3-config --includes` -I./ -I../freesteel/src -g -fPIC
 
 LIBNAME	= actp
-LIBOBJS	= Partition1.o S1.o PathX.o PathXboxed.o S1stockcircle.o S2weave.o SurfX.o SurfXboxed.o NormRay_gen.o CoreRoughGeneration.o S2weaveCell.o S2weaveCellLinearCut.o S2weaveCellLinearCutTraverse.o S2weaveCircle.o SLi_gen.o SurfXbuildcomponents.o SurfXSliceRay.o PythonStuff.o
+LIBOBJS	= Partition1.o S1.o PathX.o PathXboxed.o S1stockcircle.o S2weave.o SurfX.o SurfXboxed.o NormRay_gen.o CoreRoughGeneration.o S2weaveCell.o S2weaveCellLinearCut.o S2weaveCellLinearCutTraverse.o S2weaveCircle.o SLi_gen.o SurfXbuildcomponents.o SurfXSliceRay.o pyactp.o
 LIBDIR	= .libs/
 LIBOUT	= $(LIBDIR)$(LIBNAME).so
 
@@ -86,7 +86,7 @@ SurfXbuildcomponents.o: ../freesteel/src/pits/SurfXbuildcomponents.cpp
 SurfXSliceRay.o: ../freesteel/src/pits/SurfXSliceRay.cpp
 	$(CC) -c $? ${CFLAGS} -o $@
 
-PythonStuff.o: PythonStuff.cpp
+pyactp.o: pyactp.cpp
 	$(CC) -c $? ${CFLAGS} -o $@
 
 MakeToolpath.o: MakeToolpath.cpp
