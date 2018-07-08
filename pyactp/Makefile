@@ -3,16 +3,16 @@
 
 PREFIX	= /usr/local
 HOME	= .
-CXX     = g++
-CC      = gcc
-LD      = g++
+CXX     = clang++
+CC      = clang
+LD      = clang++
 LDFLAGS = -shared -rdynamic `python3-config --ldflags`
 LIBS    = -lstdc++ `python3-config --libs`
 CFLAGS  = -Wall -I/usr/include `python3-config --includes` -I./ -I../freesteel/src -g -fPIC
 
 LIBNAME	= actp
 LIBOBJS	= Partition1.o S1.o PathX.o PathXboxed.o S1stockcircle.o S2weave.o SurfX.o SurfXboxed.o NormRay_gen.o CoreRoughGeneration.o S2weaveCell.o S2weaveCellLinearCut.o S2weaveCellLinearCutTraverse.o S2weaveCircle.o SLi_gen.o SurfXbuildcomponents.o SurfXSliceRay.o pyactp.o
-LIBDIR	= .libs/
+LIBDIR	= ./
 LIBOUT	= $(LIBDIR)$(LIBNAME).so
 
 all:	$(LIBOUT)
@@ -24,7 +24,6 @@ $(LIBOUT): $(LIBOBJS)
 clean:
 	@-rm -f $(LIBOBJS)
 	@-rm -f $(LIBOUT)
-	@-rmdir $(LIBDIR)
 
 install: $(LIBOUT)
 	strip $^

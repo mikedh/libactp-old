@@ -1,33 +1,38 @@
-import actp
+import pyactp
 
 with open("test.tap", 'w') as f_out:
     f_out.write("G90 G21 G17\n")
-    actp.makerough('cone.stl')
+    pyactp.makerough('models/cone.stl')
 
-    npaths = actp.getnumpaths()
+    npaths = pyactp.getnumpaths()
     for path in range(0, npaths):
-        npoints = actp.getnumpoints(path)
-        nbreaks = actp.getnumbreaks(path)
-        nlinkpaths = actp.getnumlinkpths(path)
-        z = actp.getz(path)
+        npoints = pyactp.getnumpoints(path)
+        nbreaks = pyactp.getnumbreaks(path)
+        nlinkpaths = pyactp.getnumlinkpths(path)
+        z = pyactp.getz(path)
         start_pos = 0
         first_z_done = False
         for brk in range(0, nbreaks):
-            brkpos = actp.getbreak(path, brk)
+            brkpos = pyactp.getbreak(path, brk)
             for point in range(start_pos, brkpos):
-                x, y = actp.getpoint(path, point)
+                x, y = pyactp.getpoint(path, point)
                 #feed(x, y, z)
                 if first_z_done == False:
-                    f_out.write("G0 X" + str(' %.4f' % x) + " Y " + str(' %.4f' %y) + " Z " + str(' %.4f' %z) + "\n")
+                    f_out.write("G0 X" +
+                                str(' %.4f' % x) + " Y " +
+                                str(' %.4f' % y) + " Z " +
+                                str(' %.4f' % z) + "\n")
                     first_z_done = True
                 else:
-                    f_out.write("G1 X" + str(' %.4f' % x) + " Y " + str(' %.4f' %y) + "\n")
+                    f_out.write("G1 X" + str(' %.4f' % x) +
+                                " Y " + str(' %.4f' % y) + "\n")
             start_pos = brkpos
-            nlinkpoints = actp.getnumlinkpoints(path, brk)
+            nlinkpoints = pyactp.getnumlinkpoints(path, brk)
             for linkpoint in range(0, nlinkpoints):
-                x, y, z = actp.getlinkpoint(path, brk, linkpoint)
+                x, y, z = pyactp.getlinkpoint(path, brk, linkpoint)
                 #rapid(x, y, z)
-                f_out.write("G0 X" + str(' %.4f' % x) + " Y " + str(' %.4f' %y) + " Z " + str(' %.4f' %z) + "\n")
-
+                f_out.write("G0 X" +
+                            str(' %.4f' % x) + " Y " +
+                            str(' %.4f' % y) + " Z " +
+                            str(' %.4f' % z) + "\n")
     f_out.write("M2\n")
-
