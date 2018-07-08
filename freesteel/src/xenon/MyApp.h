@@ -22,17 +22,16 @@
 #ifndef MYAPP_H
 #define MYAPP_H
 
-class MyApp: public wxApp
-{
-public:
-    bool OnInit();
+class MyApp : public wxApp {
+ public:
+  bool OnInit();
 
-private:
-	typedef wxApp base;
-	void MakeMenues();
+ private:
+  typedef wxApp base;
+  void MakeMenues();
 
-	MainFrame *mainfr;
-	AnimationFrame *animfr;
+  MainFrame* mainfr;
+  AnimationFrame* animfr;
 };
 
 #endif

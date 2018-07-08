@@ -24,55 +24,52 @@
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
-struct CPara
-{
-	P2 pt; 
-	double darg; 
-	bool bClockwiseIn; // clockwise of this point is inside.  
+struct CPara {
+  P2 pt;
+  double darg;
+  bool bClockwiseIn;  // clockwise of this point is inside.
 
-	CPara(const P2& lpt, double ldarg, bool lbClockwiseIn) : 
-		pt(lpt), darg(ldarg), bClockwiseIn(lbClockwiseIn) {;}; 
+  CPara(const P2& lpt, double ldarg, bool lbClockwiseIn)
+      : pt(lpt), darg(ldarg), bClockwiseIn(lbClockwiseIn) {
+    ;
+  };
 
-	bool operator<(const CPara& oth) const
-		{ return (darg < oth.darg); }; 
-}; 
-
-//////////////////////////////////////////////////////////////////////
-struct CircCrossingStructure
-{
-	// the circle position.  
-	P2 cpt; 
-	double crad; 
-	double cradsq; 
-
-	// this marks through the range from 0 to 4 in DArg-space.  
-	S1 circrange; 
-
-	// we may in future make a radial series of S1s from the centre so we 
-	// can model the thickness of the chip.  
-
-	CircCrossingStructure(const P2& lcpt, double lcrad) : 
-		cpt(lcpt), crad(lcrad), cradsq(Square(lcrad)) {;}; 
-
-	// should be a set of boundaries 
-	void ChopOutBoundary(const vector<P2>& bound); // creates circrange
-
-	vector<CPara> cpara; // around the circle
-
-	// toolpath hacking.  
-	double prad; 
-	double pradsq; 
-	double cradpprad; 
-	double cradppradsq; 
-	double cradmpradsq; 
-
-	void SetPrad(double lprad); // precalculations 
-	void HackToolCircle(const P2& tpt); 
-	void HackToolRectangle(const P2& tpt0, const P2& tpt1); 
+  bool operator<(const CPara& oth) const { return (darg < oth.darg); };
 };
 
+//////////////////////////////////////////////////////////////////////
+struct CircCrossingStructure {
+  // the circle position.
+  P2 cpt;
+  double crad;
+  double cradsq;
+
+  // this marks through the range from 0 to 4 in DArg-space.
+  S1 circrange;
+
+  // we may in future make a radial series of S1s from the centre so we
+  // can model the thickness of the chip.
+
+  CircCrossingStructure(const P2& lcpt, double lcrad)
+      : cpt(lcpt), crad(lcrad), cradsq(Square(lcrad)) {
+    ;
+  };
+
+  // should be a set of boundaries
+  void ChopOutBoundary(const vector<P2>& bound);  // creates circrange
+
+  vector<CPara> cpara;  // around the circle
+
+  // toolpath hacking.
+  double prad;
+  double pradsq;
+  double cradpprad;
+  double cradppradsq;
+  double cradmpradsq;
+
+  void SetPrad(double lprad);  // precalculations
+  void HackToolCircle(const P2& tpt);
+  void HackToolRectangle(const P2& tpt0, const P2& tpt1);
+};
 
 #endif
-
-
-

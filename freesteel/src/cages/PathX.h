@@ -23,18 +23,15 @@
 #define PathX__h
 
 //////////////////////////////////////////////////////////////////////
-// simple case of a toolpath 
-class PathX		
-{
-public: 
-	vector<P2> pth; 
-//	double z; 
+// simple case of a toolpath
+class PathX {
+ public:
+  vector<P2> pth;
+  //	double z;
 
-	PathX() 
-		{;}; 
-//	PathX(double lz) : 
-//		z(lz) {;} 
-}; 
+  PathX() { ; };
+  //	PathX(double lz) :
+  //		z(lz) {;}
+};
 
 #endif
-

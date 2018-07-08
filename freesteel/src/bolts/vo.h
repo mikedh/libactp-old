@@ -19,42 +19,39 @@
 // See fslicense.txt and gpl.txt for further details
 ////////////////////////////////////////////////////////////////////////////////
 
-template<class V>
-struct vo
-{
-	V* v; 
-	vo(bool bInit = true) : 
-		v(bInit ? V::New() : NULL) {;}; 
-	~vo() 
-		{ if (v != NULL)  v->Delete(); }; 
-	V* operator->() 
-		{ return v; }; 
-	V* operator&() 
-		{ return v; }; 
-	void Renew() 
-		{ if (v != NULL)  v->Delete(); 
-		  v = V::New(); }; 
-}; 
+template <class V>
+struct vo {
+  V* v;
+  vo(bool bInit = true) : v(bInit ? V::New() : NULL) { ; };
+  ~vo() {
+    if (v != NULL)
+      v->Delete();
+  };
+  V* operator->() { return v; };
+  V* operator&() { return v; };
+  void Renew() {
+    if (v != NULL)
+      v->Delete();
+    v = V::New();
+  };
+};
 
-template<class V>
-struct vectorvo 
-{
-	vector<V*> vv; 
+template <class V>
+struct vectorvo {
+  vector<V*> vv;
 
 #ifndef SWIG
-	V* operator[](int i) 
-		{ return vv[i]; }; 
+  V* operator[](int i) { return vv[i]; };
 #endif
 
-  void resize(int n) 
-		{ ASSERT(vv.empty()); 
-		  vv.resize(n); 
-		  for (int i = 0; i < n; i++) 
-			vv[i] = V::New(); 
-		}
-	~vectorvo() 
-		{ for (int i = 0; i < vv.size(); i++) 
-			vv[i]->Delete(); 
-		}; 
-}; 
-
+  void resize(int n) {
+    ASSERT(vv.empty());
+    vv.resize(n);
+    for (int i = 0; i < n; i++)
+      vv[i] = V::New();
+  }
+  ~vectorvo() {
+    for (int i = 0; i < vv.size(); i++)
+      vv[i]->Delete();
+  };
+};

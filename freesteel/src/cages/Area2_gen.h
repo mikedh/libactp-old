@@ -22,40 +22,31 @@
 #ifndef AREA2_GEN
 #define AREA2_GEN
 
-
-
-
-
 //////////////////////////////////////////////////////////////////////
 void HackAreaOffset(S2weave& wve, const PathXSeries& paths, double rad);
-void HackToolpath(S2weave& wve, const PathXSeries& paths, int ixseg, const P2& ptpath, double rad);
-
-
+void HackToolpath(S2weave& wve,
+                  const PathXSeries& paths,
+                  int ixseg,
+                  const P2& ptpath,
+                  double rad);
 
 //////////////////////////////////////////////////////////////////////
-// this is a general model of a 2D area.  
-class Area2_gen : public S2weave
-{
-public: 
-	double z; 
-	double r; 
-	SurfXboxed* psxb; 
+// this is a general model of a 2D area.
+class Area2_gen : public S2weave {
+ public:
+  double z;
+  double r;
+  SurfXboxed* psxb;
 
-	void SetSurfaceTop(SurfXboxed* lpsxb, double lr); 
+  void SetSurfaceTop(SurfXboxed* lpsxb, double lr);
 
-	// pull the path up to tolerance
-	void HackDowntoZ(float lz); 
-	void FindInterior(SurfX& sx); 
+  // pull the path up to tolerance
+  void HackDowntoZ(float lz);
+  void FindInterior(SurfX& sx);
 
-//	void FindInteriorFlat(PathX& sx, double r); 
+  //	void FindInteriorFlat(PathX& sx, double r);
 
-	void MakeContours(PathXSeries& ftpaths); 
+  void MakeContours(PathXSeries& ftpaths);
 };
 
-
-
-
-
 #endif
-
-

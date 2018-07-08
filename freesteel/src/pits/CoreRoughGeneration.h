@@ -27,89 +27,95 @@
 #include "pits/pits.h"
 
 //////////////////////////////////////////////////////////////////////
-struct MachineParams
-{
-	// start point
-	bool use_given_start_point;
-	P2 start_point;
-	P2 start_direction;
-	double minz;
+struct MachineParams {
+  // start point
+  bool use_given_start_point;
+  P2 start_point;
+  P2 start_direction;
+  double minz;
 
-	// linking parameters
-	double leadoffdz; 
-	double leadofflen;
-	double leadoffrad;
-	double retractzheight;
-	double leadoffsamplestep;
+  // linking parameters
+  double leadoffdz;
+  double leadofflen;
+  double leadoffrad;
+  double retractzheight;
+  double leadoffsamplestep;
 
-	// cutting parameters
-	double toolcornerrad;
-	double toolflatrad;
-	double samplestep;
-	double stepdown;
-	double clearcuspheight;
+  // cutting parameters
+  double toolcornerrad;
+  double toolflatrad;
+  double samplestep;
+  double stepdown;
+  double clearcuspheight;
 
-	// weave parameters
-	double triangleweaveres;
-	double flatradweaveres;
+  // weave parameters
+  double triangleweaveres;
+  double flatradweaveres;
 
-	// steering parameters
-	double dchangright; 
-	double dchangrightoncontour;
-	double dchangleft;
+  // steering parameters
+  double dchangright;
+  double dchangrightoncontour;
+  double dchangleft;
 
-	double dchangefreespace;
-	double sidecutdisplch;
+  double dchangefreespace;
+  double sidecutdisplch;
 
-	// post processing
-	int fcut;
-	int fretract;
-	double thintol;
+  // post processing
+  int fcut;
+  int fretract;
+  double thintol;
 
-	MachineParams(); // default values
+  MachineParams();  // default values
 };
 
 //////////////////////////////////////////////////////////////////////
-class CoreRoughGeneration 
-{
-public: 
-	I1 machxrg; 
-	I1 machyrg; 
+class CoreRoughGeneration {
+ public:
+  I1 machxrg;
+  I1 machyrg;
 
-	PathXSeries tsbound; 
+  PathXSeries tsbound;
 
-	Area2_gen* pa2gg; 	
+  Area2_gen* pa2gg;
 
-	S2weaveCellLinearCutTraverse wc; // the tracking management.  
+  S2weaveCellLinearCutTraverse wc;  // the tracking management.
 
-	// the radius of the broken circle. 
-	double trad; 
+  // the radius of the broken circle.
+  double trad;
 
-	int countfreespacesteps; // used to open out the free-space spiral 
+  int countfreespacesteps;  // used to open out the free-space spiral
 
-	// the boxed type here 
-	PathXboxed pathxb; 
+  // the boxed type here
+  PathXboxed pathxb;
 
+  // markers of going out points which would be good to
+  // retract back down to and continue contour machining.
+  vector<BCellIndex> bcellixs;
+  bool bPrevPointDoubleRange;
 
-	// markers of going out points which would be good to 
-	// retract back down to and continue contour machining.  
-	vector<BCellIndex> bcellixs; 
-	bool bPrevPointDoubleRange; 
+  CoreRoughGeneration(PathXSeries* px, const I1& lxrg, const I1& lyrg);
 
-	CoreRoughGeneration(PathXSeries* px, const I1& lxrg, const I1& lyrg); 
+  void FindGoStart(const MachineParams& params);
 
-	
-	void FindGoStart(const MachineParams& params); 
-
-	bool RestartAtBCI(BCellIndex& bci, const MachineParams& params, bool bConnectAtStart); 
-	double ChangeBearing(const P2& pt, const P2& tvec, const MachineParams& params); 
-	void AddPoint(const P2& ppt); 
-	void GrabberAlg(const struct MachineParams& params); 
-	int TrackLink(const vector<P2>& lnk2D, S2weaveCellLinearCutTraverse wclink, bool bFromEnd, const MachineParams& params);
+  bool RestartAtBCI(BCellIndex& bci,
+                    const MachineParams& params,
+                    bool bConnectAtStart);
+  double ChangeBearing(const P2& pt,
+                       const P2& tvec,
+                       const MachineParams& params);
+  void AddPoint(const P2& ppt);
+  void GrabberAlg(const struct MachineParams& params);
+  int TrackLink(const vector<P2>& lnk2D,
+                S2weaveCellLinearCutTraverse wclink,
+                bool bFromEnd,
+                const MachineParams& params);
 
   void setWeave(S2weave* weave) { wc.ps2w = weave; }
-}; 
+};
 
-void MakeCorerough(std::vector<PathXSeries>& vpathseries, SurfX& sx, const PathXSeries& bound, const MachineParams& params);
+void MakeCorerough(std::vector<PathXSeries>& vpathseries,
+                   SurfX& sx,
+                   const PathXSeries& bound,
+                   const MachineParams& params);
 
 #endif

@@ -21,48 +21,42 @@
 #ifndef COREROUGHDLG_h
 #define COREROUGHDLG_H
 
-class CCoreRoughDlg : public wxDialog
-{
-public:
+class CCoreRoughDlg : public wxDialog {
+ public:
+  CCoreRoughDlg();
+  ~CCoreRoughDlg();
+  void UpdateControls();
 
-    CCoreRoughDlg();
-    ~CCoreRoughDlg();
-    void UpdateControls();
+  double cornerrad;
+  double flatrad;
+  double stepdown;
+  double stepin;
 
-    double cornerrad;
-    double flatrad;
-    double stepdown;
-    double stepin;
+ private:
+  wxTextCtrl* cornerradctrl;
+  wxTextCtrl* flatradctrl;
+  wxTextCtrl* stepdownctrl;
+  wxTextCtrl* stepinctrl;
 
-private:
+  wxButton *OK, *Cancel;
 
-    wxTextCtrl *cornerradctrl;
-    wxTextCtrl *flatradctrl;
-    wxTextCtrl *stepdownctrl;
-    wxTextCtrl *stepinctrl;
-
-	wxButton *OK, *Cancel;
-
-private:
-    void OnOk(wxCommandEvent &event);
-    DECLARE_EVENT_TABLE()
-
+ private:
+  void OnOk(wxCommandEvent& event);
+  DECLARE_EVENT_TABLE()
 };
 
-inline void CCoreRoughDlg::UpdateControls()
-{
-    cornerradctrl->Clear();
-    flatradctrl->Clear();
-    stepdownctrl->Clear();
-    stepinctrl->Clear();
+inline void CCoreRoughDlg::UpdateControls() {
+  cornerradctrl->Clear();
+  flatradctrl->Clear();
+  stepdownctrl->Clear();
+  stepinctrl->Clear();
 
-    *cornerradctrl << cornerrad;
-    *flatradctrl << flatrad;
-    *stepdownctrl << stepdown;
-    *stepinctrl << stepin;
+  *cornerradctrl << cornerrad;
+  *flatradctrl << flatrad;
+  *stepdownctrl << stepdown;
+  *stepinctrl << stepin;
 }
 
 bool RunCoreRoughDlg(double& cr, double& fr, double& sd, double& si);
 
 #endif
-

@@ -21,66 +21,63 @@
 #ifndef BOUNDINGBOXDLG_H
 #define BOUNDINGBOXDLG_H
 
-class CBoundingBoxDlg : public wxDialog
-{
-public:
+class CBoundingBoxDlg : public wxDialog {
+ public:
+  CBoundingBoxDlg();
+  ~CBoundingBoxDlg();
 
-    CBoundingBoxDlg();
-    ~CBoundingBoxDlg();
+  void Set(const I1& lxrg, const I1& lyrg, const I1& lzrg);
 
-    void Set(const I1& lxrg, const I1& lyrg, const I1& lzrg);
-    
-    const I1& GetXrg() const { return xrg; };
-    const I1& GetYrg() const { return yrg; };
-    const I1& GetZrg() const { return zrg; };
-    
-private:
-    I1 xrg, yrg, zrg;
-    
-    wxTextCtrl *xminbox;
-    wxTextCtrl *xmaxbox;
-    wxTextCtrl *yminbox;
-    wxTextCtrl *ymaxbox;
-    wxTextCtrl *zminbox;
-    wxTextCtrl *zmaxbox;
+  const I1& GetXrg() const { return xrg; };
+  const I1& GetYrg() const { return yrg; };
+  const I1& GetZrg() const { return zrg; };
 
-	wxButton *OK, *Cancel;
+ private:
+  I1 xrg, yrg, zrg;
 
-private:
-    void OnOk(wxCommandEvent &event);
-    DECLARE_EVENT_TABLE()
+  wxTextCtrl* xminbox;
+  wxTextCtrl* xmaxbox;
+  wxTextCtrl* yminbox;
+  wxTextCtrl* ymaxbox;
+  wxTextCtrl* zminbox;
+  wxTextCtrl* zmaxbox;
 
-    void UpdateControls();
+  wxButton *OK, *Cancel;
+
+ private:
+  void OnOk(wxCommandEvent& event);
+  DECLARE_EVENT_TABLE()
+
+  void UpdateControls();
 };
 
-inline void CBoundingBoxDlg::Set(const I1& lxrg, const I1& lyrg, const I1& lzrg)
-{
-    xrg = lxrg;
-    yrg = lyrg;
-    zrg = lzrg;
-    
-    UpdateControls();    
+inline void CBoundingBoxDlg::Set(const I1& lxrg,
+                                 const I1& lyrg,
+                                 const I1& lzrg) {
+  xrg = lxrg;
+  yrg = lyrg;
+  zrg = lzrg;
+
+  UpdateControls();
 }
 
-inline void CBoundingBoxDlg::UpdateControls()
-{
-	xminbox->Clear();
-	xmaxbox->Clear();
-	yminbox->Clear();
-	ymaxbox->Clear();
-	zminbox->Clear();
-	zmaxbox->Clear();
+inline void CBoundingBoxDlg::UpdateControls() {
+  xminbox->Clear();
+  xmaxbox->Clear();
+  yminbox->Clear();
+  ymaxbox->Clear();
+  zminbox->Clear();
+  zmaxbox->Clear();
 
-    *xminbox << xrg.lo;
-    *xmaxbox << xrg.hi;
-    *yminbox << yrg.lo;
-    *ymaxbox << yrg.hi;
-    *zminbox << zrg.lo;
-    *zmaxbox << zrg.hi;
+  *xminbox << xrg.lo;
+  *xmaxbox << xrg.hi;
+  *yminbox << yrg.lo;
+  *ymaxbox << yrg.hi;
+  *zminbox << zrg.lo;
+  *zmaxbox << zrg.hi;
 }
 
 void BoundingBox(vtkPolyData* vtkdat, I1& xrg, I1& yrg, I1& zrg);
 bool RunBoundingBoxDlg(I1& xrg, I1& yrg, I1& zrg);
 
 #endif
-

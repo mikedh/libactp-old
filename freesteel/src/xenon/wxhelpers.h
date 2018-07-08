@@ -18,6 +18,5 @@
 //
 // See fslicense.txt and gpl.txt for further details
 ////////////////////////////////////////////////////////////////////////////////
-void OutputDebugStringG(const char* str); 
+void OutputDebugStringG(const char* str);
 bool ReadDouble(const wxTextCtrl* ctrl, double& val);
-

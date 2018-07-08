@@ -22,61 +22,53 @@
 #ifndef S2WEAVECELL_H
 #define S2WEAVECELL_H
 
-
 //////////////////////////////////////////////////////////////////////
-struct S2weaveCell
-{
-	class S2weave* ps2w; 
+struct S2weaveCell {
+  class S2weave* ps2w;
 
-	// indexes for finding the cell.  
-	// With subdivision the indexing will be more complex.  
-	int iu; 
-	int iv; 
+  // indexes for finding the cell.
+  // With subdivision the indexing will be more complex.
+  int iu;
+  int iv;
 
-	// cell boundary pointers (which get changed by splitting)
-	const S1* pfulo; 
-	const S1* pfuhi; 
-	const S1* pfvlo; 
-	const S1* pfvhi; 
+  // cell boundary pointers (which get changed by splitting)
+  const S1* pfulo;
+  const S1* pfuhi;
+  const S1* pfvlo;
+  const S1* pfvhi;
 
-	// further info about where the cell corners lie in the boundaries.  
-	// cell bounds (for ease of viewing).  
-	I1 clurg; 
-	I1 clvrg; 
+  // further info about where the cell corners lie in the boundaries.
+  // cell bounds (for ease of viewing).
+  I1 clurg;
+  I1 clvrg;
 
-	// it goes bottom left, top left, top right, bottom right.  
-	P2 GetCorner(int icn) const; 
-	const S1* GetSide(int icn) const; // gets the following edge from the corner.  
+  // it goes bottom left, top left, top right, bottom right.
+  P2 GetCorner(int icn) const;
+  const S1* GetSide(int icn) const;  // gets the following edge from the corner.
 
-    // the list of endpoints of fibres in this cell.
-    // first int is the edge (left is first), second is the B1 entry in the array.
-    vector< pair<int, B1*> > boundlist;
-    bool bLDin;
-    bool bLUin;
-    bool bRUin;
-    bool bRDin;
+  // the list of endpoints of fibres in this cell.
+  // first int is the edge (left is first), second is the B1 entry in the array.
+  vector<pair<int, B1*> > boundlist;
+  bool bLDin;
+  bool bLUin;
+  bool bRUin;
+  bool bRDin;
 
-	// index into boundlist which marks connects the 
-	// points between the boundary with lines, resolving ambiguities.  
-	// not possible to control for order.  
-	vector< pair<int, int> > bolistpairs; 
+  // index into boundlist which marks connects the
+  // points between the boundary with lines, resolving ambiguities.
+  // not possible to control for order.
+  vector<pair<int, int> > bolistpairs;
 
+  P2 GetBoundPoint(int ibl);
+  bool GetBoundLower(int ibl);
 
-	P2 GetBoundPoint(int ibl); 
-	bool GetBoundLower(int ibl); 
+  // changing and construction functions
+  void ConstructCellBounds();
+  int CreateBoundList();
+  void FindCellIndex(const P2& lptc);
+  void AdvanceCrossSide(int icn, const P2& cspt);
 
-
-	// changing and construction functions 
-		void ConstructCellBounds(); 
-	    int CreateBoundList(); 
-	void FindCellIndex(const P2& lptc); 
-	void AdvanceCrossSide(int icn, const P2& cspt); 
-
-
-	int GetBoundListPosition(int sic, const P2& ptb, bool bOnBoundOutside); 
+  int GetBoundListPosition(int sic, const P2& ptb, bool bOnBoundOutside);
 };
 
-
-
 #endif
-

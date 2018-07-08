@@ -22,40 +22,31 @@
 #ifndef GST_H
 #define GST_H
 
-class vtkSTLReader; 
-class vtkPolyData; 
-class vtkPolyDataMapper; 
-class vtkRenderer; 
-class vtkRenderWindow; 
-class wxVTKRenderWindowInteractor; 
+class vtkSTLReader;
+class vtkPolyData;
+class vtkPolyDataMapper;
+class vtkRenderer;
+class vtkRenderWindow;
+class wxVTKRenderWindowInteractor;
 class vtkClipPolyData;
 class vtkActor;
 class wxWindow;
-class SurfX; 
+class SurfX;
 
+// class which is the overall group of things.
+class GeometryStuffTogether {
+ public:
+  vector<class GSTbase*> gstees;
 
+  void MakeRectBoundary(const I1& xrg, const I1& yrg, double z);
 
+  // single chain vtk structure
+  vo<vtkRenderer> ren1;
+  vtkRenderWindow* renWin;
 
-// class which is the overall group of things.  
-class GeometryStuffTogether
-{
-public: 
-	vector<class GSTbase *> gstees; 
-
-	void MakeRectBoundary(const I1& xrg, const I1& yrg, double z); 
-
-
-// single chain vtk structure
-	vo<vtkRenderer> ren1;
-	vtkRenderWindow* renWin; 
-
-
-// default constructor
-	GeometryStuffTogether(vtkRenderWindow* lrenWin); 
-	~GeometryStuffTogether();
-
-}; 
-
-
+  // default constructor
+  GeometryStuffTogether(vtkRenderWindow* lrenWin);
+  ~GeometryStuffTogether();
+};
 
 #endif

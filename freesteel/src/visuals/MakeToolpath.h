@@ -22,8 +22,11 @@
 #ifndef MakeToolpath__h
 #define MakeToolpath__h
 
-void MakeCorerough(vector<PathXSeries>& vpathseries, SurfX& sx, const PathXSeries& bound, const MachineParams& params);
-//void MakeAreaclear(vtkPolyData* res);
-//void MakeStock(vtkPolyData* res, PathX& px);
+void MakeCorerough(vector<PathXSeries>& vpathseries,
+                   SurfX& sx,
+                   const PathXSeries& bound,
+                   const MachineParams& params);
+// void MakeAreaclear(vtkPolyData* res);
+// void MakeStock(vtkPolyData* res, PathX& px);
 
 #endif

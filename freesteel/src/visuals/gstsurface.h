@@ -21,59 +21,56 @@
 #ifndef GSTSURFACE_H
 #define GSTSURFACE_H
 
-//struct vector_PathX : vector<PathX> {;}; 
+// struct vector_PathX : vector<PathX> {;};
 
-/////////////////////////////////////////////////////////// 
-class GSTbase
-{
-public:
-	vo<vtkActorCollection> actors;
-	I1 xrg, yrg, zrg;
+///////////////////////////////////////////////////////////
+class GSTbase {
+ public:
+  vo<vtkActorCollection> actors;
+  I1 xrg, yrg, zrg;
 
-	void AddToRenderer(class vtkRenderer* ren);
-	bool GetVisibility();
-	void SetVisibility(bool bVisible);
+  void AddToRenderer(class vtkRenderer* ren);
+  bool GetVisibility();
+  void SetVisibility(bool bVisible);
   PathXSeries MakeRectBoundary(double lz);
 
-	virtual ~GSTbase() {};
+  virtual ~GSTbase(){};
 };
 
-/////////////////////////////////////////////////////////// 
-class GSTsurface : public GSTbase
-{
-public: 
-	vo<vtkSTLReader> stl; 
-	vo<vtkPolyDataMapper> stlMap; 
+///////////////////////////////////////////////////////////
+class GSTsurface : public GSTbase {
+ public:
+  vo<vtkSTLReader> stl;
+  vo<vtkPolyDataMapper> stlMap;
 
-	void LoadSTL(const char* fname); 
-	void PushTrianglesIntoSurface(SurfX& sx); 
+  void LoadSTL(const char* fname);
+  void PushTrianglesIntoSurface(SurfX& sx);
 
-	virtual ~GSTsurface() {};
-}; 
+  virtual ~GSTsurface(){};
+};
 
-/////////////////////////////////////////////////////////// 
-class GSTtoolpath : public GSTbase
-{
-public: 
-	vector<PathXSeries> ftpaths;
+///////////////////////////////////////////////////////////
+class GSTtoolpath : public GSTbase {
+ public:
+  vector<PathXSeries> ftpaths;
 
-	vo<vtkPolyData> ftpolydata;
-	vo<fsvtkToolpathMapper> ftpolydataMap;
+  vo<vtkPolyData> ftpolydata;
+  vo<fsvtkToolpathMapper> ftpolydataMap;
 
-	// our single tool definition 
-	ToolShape toolshape;
+  // our single tool definition
+  ToolShape toolshape;
 
-	// the boundary we used to generate the toolpath
-	PathXSeries bound;
+  // the boundary we used to generate the toolpath
+  PathXSeries bound;
 
   // Update polydata from the PathXSeries
-	void UpdateFromPax();
-//    void UpdateFromToolShape();
-    void SetDrawWhole();
+  void UpdateFromPax();
+  //    void UpdateFromToolShape();
+  void SetDrawWhole();
 
   void addPath(const PathXSeries* path) { ftpaths.push_back(*path); }
 
-	virtual ~GSTtoolpath() {};
-}; 
+  virtual ~GSTtoolpath(){};
+};
 
 #endif

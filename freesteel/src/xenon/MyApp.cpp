@@ -28,10 +28,8 @@
 
 #include "MyApp.h"
 
-
 // `Main program' equivalent, creating windows and returning main app mainfr
-bool MyApp::OnInit()
-{
+bool MyApp::OnInit() {
   mainfr = new MainFrame(_T("freesteel"), wxPoint(20, 20), wxSize(800, 600));
 
   // Make a menubar
@@ -40,25 +38,24 @@ bool MyApp::OnInit()
   // Show the mainfr
   mainfr->Show(TRUE);
 
-  animfr = new AnimationFrame(mainfr, _T("Animation"), wxPoint(25, 25), wxSize(400, 100));
+  animfr = new AnimationFrame(mainfr, _T("Animation"), wxPoint(25, 25),
+                              wxSize(400, 100));
   animfr->Show(TRUE);
 
   mainfr->aniframe = animfr;
 
-
   SetTopWindow(mainfr);
-  
+
   return TRUE;
 }
 
-void MyApp::MakeMenues()
-{
-  wxMenu *file_menu = new wxMenu;
-  file_menu->Append(DIALOGS_FILE_OPEN,  _T("&Open file\tCtrl-O"));
+void MyApp::MakeMenues() {
+  wxMenu* file_menu = new wxMenu;
+  file_menu->Append(DIALOGS_FILE_OPEN, _T("&Open file\tCtrl-O"));
   file_menu->Append(wxID_EXIT, _T("E&xit\tAlt-X"));
 
   // machining menu
-  wxMenu *view_menu = new wxMenu;
+  wxMenu* view_menu = new wxMenu;
   view_menu->Append(DIALOG_VIEW_MAXIMIZE, _T("&Maximize\tM"));
   view_menu->Append(DIALOG_VIEW_CENTRE, _T("&Centre\tShift-T"));
   view_menu->Append(DIALOG_VIEW_X, _T("Along &X\tX"));
@@ -66,22 +63,25 @@ void MyApp::MakeMenues()
 
   // actors menu
   mainfr->actors_menu = new wxMenu;
-  
+
   // toolpath menu
   mainfr->animate_menu = new wxMenu;
-  
+
   // machining menu
-  wxMenu *machining_menu = new wxMenu;
+  wxMenu* machining_menu = new wxMenu;
   machining_menu->Append(DIALOG_SURFACE_BOUNDING_BOX, _T("&Bounding box"));
   machining_menu->Append(DIALOG_SLICE, _T("&Slice"));
   machining_menu->Append(DIALOG_AREACLEAR, _T("&Core Roughing"));
 
-  mainfr->animate_menu->Append(MNU_FROMSTART, _T("&From Start"), _T("Replay from start of toolpath"), wxITEM_CHECK);
-  mainfr->animate_menu->Append(MNU_ONELEVEL, _T("&One Level"), _T("Replay per level of toolpath"), wxITEM_CHECK);
+  mainfr->animate_menu->Append(MNU_FROMSTART, _T("&From Start"),
+                               _T("Replay from start of toolpath"),
+                               wxITEM_CHECK);
+  mainfr->animate_menu->Append(MNU_ONELEVEL, _T("&One Level"),
+                               _T("Replay per level of toolpath"),
+                               wxITEM_CHECK);
   mainfr->animate_menu->Append(-1, _T(""), _T(""), wxITEM_SEPARATOR);
 
-
-  wxMenuBar *menu_bar = new wxMenuBar;
+  wxMenuBar* menu_bar = new wxMenuBar;
   menu_bar->Append(file_menu, _T("&File"));
   menu_bar->Append(view_menu, _T("&View"));
   menu_bar->Append(mainfr->actors_menu, _T("&Actors"));

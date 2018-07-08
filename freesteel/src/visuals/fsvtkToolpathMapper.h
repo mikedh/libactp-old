@@ -28,61 +28,59 @@
 
 class ToolShape;
 
-struct AnimatedPos
-{
-	int ipathx; // the path we are on
-	P3 ptOnLink;
-	int ilink;
-	int isegOnLink;
+struct AnimatedPos {
+  int ipathx;  // the path we are on
+  P3 ptOnLink;
+  int ilink;
+  int isegOnLink;
 
-	bool bOnPath; // true if the current position is on a toolpath and potentially cutting
-	P2 ptOnPath;
-	int isegOnPath;
+  bool bOnPath;  // true if the current position is on a toolpath and
+                 // potentially cutting
+  P2 ptOnPath;
+  int isegOnPath;
 };
 
 /**
-  This class maps the toolpath to the display, and supports showing only an 
-  interval of the toolpath, as needed for animation. This is done without 
+  This class maps the toolpath to the display, and supports showing only an
+  interval of the toolpath, as needed for animation. This is done without
   copying the actual data.
 */
 
-class fsvtkToolpathMapper : public vtkOpenGLPolyDataMapper
-{
-public:
-		static fsvtkToolpathMapper *New();
+class fsvtkToolpathMapper : public vtkOpenGLPolyDataMapper {
+ public:
+  static fsvtkToolpathMapper* New();
 
-		vector<PathXSeries>* pftpaths;
-		ToolShape* ptoolshape;
-		PathXSeries* bound;
-		I1 xrg, yrg;
-		S2weave stockweave;
+  vector<PathXSeries>* pftpaths;
+  ToolShape* ptoolshape;
+  PathXSeries* bound;
+  I1 xrg, yrg;
+  S2weave stockweave;
 
+  // this mark out a visible interval of the ftpaths.
+  // going to
+  AnimatedPos pos;
 
-	// this mark out a visible interval of the ftpaths.  
-	// going to
-		AnimatedPos pos;
+  // starting from
+  AnimatedPos poslast;
 
-        // starting from 
-		AnimatedPos poslast;
+  bool bAnimated, bForward;
+  bool bDrawStock;
 
-        bool bAnimated, bForward;
-        bool bDrawStock;
-        
-		int Draw(vtkRenderer *aren, vtkActor *act);
-        void DrawStock();
-        void DrawFibre(S1& fib, I1& wrg, double z);
-        void CalculateStock(double zstock);
+  int Draw(vtkRenderer* aren, vtkActor* act);
+  void DrawStock();
+  void DrawFibre(S1& fib, I1& wrg, double z);
+  void CalculateStock(double zstock);
 
-protected:
-		fsvtkToolpathMapper();
-		~fsvtkToolpathMapper();
+ protected:
+  fsvtkToolpathMapper();
+  ~fsvtkToolpathMapper();
 
-private:
-		fsvtkToolpathMapper(const fsvtkToolpathMapper&);  // Not implemented.
-		void operator=(const fsvtkToolpathMapper&);  // Not implemented.
+ private:
+  fsvtkToolpathMapper(const fsvtkToolpathMapper&);  // Not implemented.
+  void operator=(const fsvtkToolpathMapper&);       // Not implemented.
 
-		int DrawPathSegment();
-		int DrawToolShape(const P3& pos);
+  int DrawPathSegment();
+  int DrawToolShape(const P3& pos);
 };
 
 #endif

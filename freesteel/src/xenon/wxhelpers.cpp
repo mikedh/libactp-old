@@ -19,22 +19,19 @@
 // See fslicense.txt and gpl.txt for further details
 ////////////////////////////////////////////////////////////////////////////////
 #include "wx/wx.h"
-void OutputDebugStringG(const char* str)
-{
-    wxLogError(wxT(str));
+void OutputDebugStringG(const char* str) {
+  wxLogError(wxT(str));
 }
 
-void OutputDebugStringG(const char* str0, const char* strf, int line1) 
-{
-    wxString strline1;
-    strline1 << line1;
-	wxString ws = wxString(str0) + wxString(" file: ") + wxString(strf) + wxString(" line: ") + strline1; 
-    wxLogError(ws);
+void OutputDebugStringG(const char* str0, const char* strf, int line1) {
+  wxString strline1;
+  strline1 << line1;
+  wxString ws = wxString(str0) + wxString(" file: ") + wxString(strf) +
+                wxString(" line: ") + strline1;
+  wxLogError(ws);
 }
 
-bool ReadDouble(const wxTextCtrl* ctrl, double& val)
-{
-    wxString sval = ctrl->GetValue();
-	return sval.ToDouble(&val);
+bool ReadDouble(const wxTextCtrl* ctrl, double& val) {
+  wxString sval = ctrl->GetValue();
+  return sval.ToDouble(&val);
 }
-

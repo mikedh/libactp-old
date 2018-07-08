@@ -22,41 +22,27 @@
 #include "bolts/bolts.h"
 #include "cages/cages.h"
 
-
+//////////////////////////////////////////////////////////////////////
+SurfX::SurfX(const I1& lgxrg, const I1& lgyrg, const I1& lgzrg)
+    : gxrg(lgxrg), gyrg(lgyrg), gzrg(lgzrg), rangestate(2) {
+  ;
+};
 
 //////////////////////////////////////////////////////////////////////
-SurfX::SurfX(const I1& lgxrg, const I1& lgyrg, const I1& lgzrg) : 
-	gxrg(lgxrg), gyrg(lgyrg), gzrg(lgzrg), rangestate(2)  
-{;}; 
-
-//////////////////////////////////////////////////////////////////////
-SurfX::SurfX() : 
-	rangestate(0)  
-{;}; 
-
-
+SurfX::SurfX() : rangestate(0) {
+  ;
+};
 
 //////////////////////////////////////////////////////////////////////
 // the first two come from b12
-P3* triangX::ThirdPoint()
-{
-	return (((ab1->p0 != b12->p0) && (ab1->p0 != b12->p1)) ? ab1->p0 : ab1->p1); 
+P3* triangX::ThirdPoint() {
+  return (((ab1->p0 != b12->p0) && (ab1->p0 != b12->p1)) ? ab1->p0 : ab1->p1);
 }
 
 //////////////////////////////////////////////////////////////////////
-P3* triangX::ThirdPoint(edgeX* pe)  
-{
-	ASSERT((pe == ab1) || (pe == ab2) || (pe == b12));  
-	if (pe == b12)
-		return ThirdPoint(); 
-	return (((b12->p0 != pe->p0) && (b12->p0 != pe->p1)) ? b12->p0 : b12->p1); 
+P3* triangX::ThirdPoint(edgeX* pe) {
+  ASSERT((pe == ab1) || (pe == ab2) || (pe == b12));
+  if (pe == b12)
+    return ThirdPoint();
+  return (((b12->p0 != pe->p0) && (b12->p0 != pe->p1)) ? b12->p0 : b12->p1);
 }
-
-
-
-
-
-
-
-
-

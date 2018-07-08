@@ -31,4 +31,3 @@
 #include "Area2_gen.h"
 
 #endif
-

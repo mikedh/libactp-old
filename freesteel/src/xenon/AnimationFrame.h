@@ -21,55 +21,49 @@
 #ifndef ANIMATIONFRAME__H
 #define ANIMATIONFRAME__H
 
-class AnimationFrame: public wxFrame
-{
-public:
-    AnimationFrame(MainFrame* mf, const wxString& title, const wxPoint& pos, const wxSize& size);
+class AnimationFrame : public wxFrame {
+ public:
+  AnimationFrame(MainFrame* mf,
+                 const wxString& title,
+                 const wxPoint& pos,
+                 const wxSize& size);
 
-	void OnAnimateTP(wxScrollEvent& event);
-	void OnIndexTP(wxScrollEvent& event);
-	void OnAnimate(wxCommandEvent& event);
-	void OnCalculateStock(wxCommandEvent& event);
-	void OnExit(wxCommandEvent& event);
+  void OnAnimateTP(wxScrollEvent& event);
+  void OnIndexTP(wxScrollEvent& event);
+  void OnAnimate(wxCommandEvent& event);
+  void OnCalculateStock(wxCommandEvent& event);
+  void OnExit(wxCommandEvent& event);
 
-	void UpdateControls();
+  void UpdateControls();
 
-	void SetAnimated(class GSTtoolpath* gst);
-	void ClearAnimated();
-	
-	enum Anistyle {FROMSTART, ONELEVEL};
-	void SetStyle(Anistyle lst) { style = lst; }
-	Anistyle GetStyle() const { return style; }
+  void SetAnimated(class GSTtoolpath* gst);
+  void ClearAnimated();
 
-private:
-	MainFrame* mainfr;
-	wxSlider *sldTP;
-	wxSlider *sldIndexLoadedTP;
-	wxString status;
+  enum Anistyle { FROMSTART, ONELEVEL };
+  void SetStyle(Anistyle lst) { style = lst; }
+  Anistyle GetStyle() const { return style; }
 
-	class GSTtoolpath* pthanimated;
-	double totallen; // total length
-	double animatedlast; // length to last slider position
+ private:
+  MainFrame* mainfr;
+  wxSlider* sldTP;
+  wxSlider* sldIndexLoadedTP;
+  wxString status;
 
-	enum Anistyle style;
+  class GSTtoolpath* pthanimated;
+  double totallen;      // total length
+  double animatedlast;  // length to last slider position
 
-	DECLARE_EVENT_TABLE()
+  enum Anistyle style;
+
+  DECLARE_EVENT_TABLE()
 };
 
-enum
-{
-	SLIDER_ANIMATION = 1
-};
+enum { SLIDER_ANIMATION = 1 };
 
+enum { CALC_STOCK = 400 };
 
-
-enum
-{
-	CALC_STOCK = 400
-};
-
-void PostProcess(FILE* fpost, const vector<class PathXSeries>& pathxseries, const struct MachineParams& params);
+void PostProcess(FILE* fpost,
+                 const vector<class PathXSeries>& pathxseries,
+                 const struct MachineParams& params);
 
 #endif
-
-

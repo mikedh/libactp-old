@@ -6,24 +6,24 @@
   Date:      $Date: 2004/04/26 10:38:36 $
   Version:   $Revision: 1.3 $
 
-  Copyright (c) 1993-2002 Ken Martin, Will Schroeder, Bill Lorensen 
+  Copyright (c) 1993-2002 Ken Martin, Will Schroeder, Bill Lorensen
   All rights reserved.
   See Copyright.txt or http://www.kitware.com/Copyright.htm for details.
 
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
      PURPOSE.  See the above copyright notice for more information.
 
 =========================================================================*/
 
-// .NAME  wxVTKRenderWindowInteractor - class to enable VTK to render to 
+// .NAME  wxVTKRenderWindowInteractor - class to enable VTK to render to
 // and interact with wxWindow.
 // .SECTION Description
 //  wxVTKRenderWindowInteractor provide a VTK widget for wxWindow. This class
 // was completely rewrote to have the 'Look & Feel' of the python version:
 // wxVTKRenderWindowInteractor.py
-// .SECTION Caveats 
-//  - There is a know bug that prevent this class to works for more info see 
+// .SECTION Caveats
+//  - There is a know bug that prevent this class to works for more info see
 // WX_USE_X_CAPTURE. This bug only affect wxGTK from 2.3.2 to wxGTK 2.4.0.
 //  - Furthermore this class is tempated over either wxWindows or wxGLCanvas,
 // in wxWindows 2.3.1 and earlier, the wxGLCanvas had scroll bars, you can avoid
@@ -55,33 +55,33 @@
 // vtk includes
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderWindow.h>
-//This is needed for vtk 3.1 :
+// This is needed for vtk 3.1 :
 #ifndef VTK_MAJOR_VERSION
 #include <vtkVersion.h>
 #endif
 
-//For more info on this class please go to:
-//http://www.creatis.insa-lyon.fr/~malaterre/wxVTK/
-//This hack is for some buggy wxGTK version:
+// For more info on this class please go to:
+// http://www.creatis.insa-lyon.fr/~malaterre/wxVTK/
+// This hack is for some buggy wxGTK version:
 #if wxCHECK_VERSION(2, 3, 2) && !wxCHECK_VERSION(2, 4, 1) && defined(__WXGTK__)
-#  define WX_USE_X_CAPTURE 0
+#define WX_USE_X_CAPTURE 0
 #else
-#  define WX_USE_X_CAPTURE 1
+#define WX_USE_X_CAPTURE 1
 #endif
 
 #ifdef __WXGTK__
-#  if wxUSE_GLCANVAS
-#    include "gdk/gdkprivate.h"
-#    include <wx/gtk/win_gtk.h>
-#    include <wx/glcanvas.h>
-#  else
-#    error "problem of wxGLCanvas"
-#  endif //wxUSE_GLCANVAS
-#endif //__WXGTK__
+#if wxUSE_GLCANVAS
+#include "gdk/gdkprivate.h"
+#include <wx/gtk/win_gtk.h>
+#include <wx/glcanvas.h>
+#else
+#error "problem of wxGLCanvas"
+#endif  // wxUSE_GLCANVAS
+#endif  //__WXGTK__
 
-//Motif version (renamed into wxX11 for wxWindow 2.4 and newer)
+// Motif version (renamed into wxX11 for wxWindow 2.4 and newer)
 #if defined(__WXMOTIF__)
-# error This GUI is not supported by wxVTKRenderWindowInteractor for now
+#error This GUI is not supported by wxVTKRenderWindowInteractor for now
 #endif
 
 // wx forward declarations
@@ -91,88 +91,93 @@ class wxTimerEvent;
 class wxKeyEvent;
 class wxSizeEvent;
 
-#if defined(__WXMSW__) || defined (__WXMAC__) || defined (__WXCOCOA__)
-class VTK_RENDERING_EXPORT wxVTKRenderWindowInteractor : public wxWindow, virtual public vtkRenderWindowInteractor
+#if defined(__WXMSW__) || defined(__WXMAC__) || defined(__WXCOCOA__)
+class VTK_RENDERING_EXPORT wxVTKRenderWindowInteractor
+    : public wxWindow,
+      virtual public vtkRenderWindowInteractor
 #else
-class VTK_RENDERING_EXPORT wxVTKRenderWindowInteractor : public wxGLCanvas, virtual public vtkRenderWindowInteractor
+class VTK_RENDERING_EXPORT wxVTKRenderWindowInteractor
+    : public wxGLCanvas,
+      virtual public vtkRenderWindowInteractor
 #endif
 {
   DECLARE_DYNAMIC_CLASS(wxVTKRenderWindowInteractor)
-  
-  public:
-    //constructors
-    wxVTKRenderWindowInteractor();
 
-    wxVTKRenderWindowInteractor(wxWindow *parent,
-                                wxWindowID id,
-                                const wxPoint &pos = wxDefaultPosition,
-                                const wxSize &size = wxDefaultSize,
-                                long style = wxWANTS_CHARS | wxNO_FULL_REPAINT_ON_RESIZE,
-                                const wxString &name = wxPanelNameStr);
-	//vtk ::New()
-    static wxVTKRenderWindowInteractor * New();
+ public:
+  // constructors
+  wxVTKRenderWindowInteractor();
 
-	 //destructor
-    ~wxVTKRenderWindowInteractor();
+  wxVTKRenderWindowInteractor(wxWindow* parent,
+                              wxWindowID id,
+                              const wxPoint& pos = wxDefaultPosition,
+                              const wxSize& size = wxDefaultSize,
+                              long style = wxWANTS_CHARS |
+                                           wxNO_FULL_REPAINT_ON_RESIZE,
+                              const wxString& name = wxPanelNameStr);
+  // vtk ::New()
+  static wxVTKRenderWindowInteractor* New();
 
-    // vtkRenderWindowInteractor overrides
-    void Initialize();
-    void Enable();
-    void Disable();
-    void Start();
-    void UpdateSize(int x, int y);
-    int CreateTimer(int timertype);
-    int DestroyTimer();
-    void TerminateApp() {};
+  // destructor
+  ~wxVTKRenderWindowInteractor();
 
-    // event handlers
-    void OnPaint(wxPaintEvent &event);
-    void OnEraseBackground (wxEraseEvent& event);
-    void OnMotion(wxMouseEvent &event);
-    void OnMouseWheel(wxMouseEvent &event);
+  // vtkRenderWindowInteractor overrides
+  void Initialize();
+  void Enable();
+  void Disable();
+  void Start();
+  void UpdateSize(int x, int y);
+  int CreateTimer(int timertype);
+  int DestroyTimer();
+  void TerminateApp(){};
 
-    void OnButtonDown(wxMouseEvent &event);
-    void OnButtonUp(wxMouseEvent &event);
+  // event handlers
+  void OnPaint(wxPaintEvent& event);
+  void OnEraseBackground(wxEraseEvent& event);
+  void OnMotion(wxMouseEvent& event);
+  void OnMouseWheel(wxMouseEvent& event);
+
+  void OnButtonDown(wxMouseEvent& event);
+  void OnButtonUp(wxMouseEvent& event);
 #if !(VTK_MAJOR_VERSION == 3 && VTK_MINOR_VERSION == 1)
-    void OnEnter(wxMouseEvent &event);
-    void OnLeave(wxMouseEvent &event);
-    void OnKeyDown(wxKeyEvent &event);
-    void OnKeyUp(wxKeyEvent &event);
+  void OnEnter(wxMouseEvent& event);
+  void OnLeave(wxMouseEvent& event);
+  void OnKeyDown(wxKeyEvent& event);
+  void OnKeyUp(wxKeyEvent& event);
 #endif
-    void OnTimer(wxTimerEvent &event);
-    void OnSize(wxSizeEvent &event);
+  void OnTimer(wxTimerEvent& event);
+  void OnSize(wxSizeEvent& event);
 
-    void Render();
-    void SetRenderWhenDisabled(int newValue);
+  void Render();
+  void SetRenderWhenDisabled(int newValue);
 
-    // Description:
-    // Prescribe that the window be created in a stereo-capable mode. This
-    // method must be called before the window is realized. Default if off.
-    vtkGetMacro(Stereo,int);
-    vtkBooleanMacro(Stereo,int);
-    virtual void SetStereo(int capable);
+  // Description:
+  // Prescribe that the window be created in a stereo-capable mode. This
+  // method must be called before the window is realized. Default if off.
+  vtkGetMacro(Stereo, int);
+  vtkBooleanMacro(Stereo, int);
+  virtual void SetStereo(int capable);
 
-    // Description:
-    // As CaptureMouse could be a problem sometimes on a window box
-    // This method allow to set or not the CaptureMouse.
-    // This method actually will works only if WX_USE_X_CAPTURE was set to 1
-    vtkSetMacro(UseCaptureMouse,int);
-    vtkBooleanMacro(UseCaptureMouse,int);
+  // Description:
+  // As CaptureMouse could be a problem sometimes on a window box
+  // This method allow to set or not the CaptureMouse.
+  // This method actually will works only if WX_USE_X_CAPTURE was set to 1
+  vtkSetMacro(UseCaptureMouse, int);
+  vtkBooleanMacro(UseCaptureMouse, int);
 
-  protected:
-    wxTimer* timer;
-    int ActiveButton;
-    int RenderAllowed;
-    long GetHandle();
-    int Stereo;
-    
-  private:
-    long Handle;
-    bool Created;
-    int RenderWhenDisabled;
-    int UseCaptureMouse;
+ protected:
+  wxTimer* timer;
+  int ActiveButton;
+  int RenderAllowed;
+  long GetHandle();
+  int Stereo;
 
-    DECLARE_EVENT_TABLE()
+ private:
+  long Handle;
+  bool Created;
+  int RenderWhenDisabled;
+  int UseCaptureMouse;
+
+  DECLARE_EVENT_TABLE()
 };
 
-#endif //_wxVTKRenderWindowInteractor_h_
+#endif  //_wxVTKRenderWindowInteractor_h_

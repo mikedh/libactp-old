@@ -30,13 +30,16 @@
 #include <list>
 
 // min and max on VC6.0 and earlier
-#if (defined(WIN32) && (_MSC_VER < 1300) ) 
+#if (defined(WIN32) && (_MSC_VER < 1300))
 template <class _Tp>
-inline const _Tp& (min)(const _Tp& __a, const _Tp& __b) { return __b < __a ? __b : __a; }
+inline const _Tp&(min)(const _Tp& __a, const _Tp& __b) {
+  return __b < __a ? __b : __a;
+}
 template <class _Tp>
-inline const _Tp& (max)(const _Tp& __a, const _Tp& __b) {  return  __a < __b ? __b : __a; }
+inline const _Tp&(max)(const _Tp& __a, const _Tp& __b) {
+  return __a < __b ? __b : __a;
+}
 #endif
-
 
 #include "debugfuncs.h"
 
@@ -49,6 +52,5 @@ using namespace std;
 #include "S1.h"
 #include "Partition1.h"
 #include "vo.h"
-
 
 #endif

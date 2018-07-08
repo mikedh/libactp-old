@@ -23,7 +23,8 @@
 #define macros__h
 
 #ifdef WIN32
-#pragma warning(disable:4390) // Empty statements in code - caused by ASSERT statements in release
+#pragma warning(disable : 4390)  // Empty statements in code - caused by ASSERT
+                                 // statements in release
 #endif
 
 //////////////////////////////////////////////////////////////////////
@@ -32,14 +33,26 @@
 #ifdef MDEBUG
 
 void OutputDebugStringG(const char* str);
-void OutputDebugStringG(const char* str0, const char* strf, int line1); 
+void OutputDebugStringG(const char* str0, const char* strf, int line1);
 
 #define MDTOL 0.001
 
 #define DEBUG_ONLY(X) X
-#define ASSERT(X) do { if (!(X))  OutputDebugStringG("Assert failed: ", __FILE__, __LINE__); } while (false) 
-#define TOL_ZERO(X) do { if (fabs(X) > MDTOL)  OutputDebugStringG("Tol-Zero failed: ", __FILE__, __LINE__); } while (false) 
-#define IF_TOL_ZERO(B, X) do { if ((B) && (fabs(X) > MDTOL))  OutputDebugStringG("If-Tol-Zero failed: ", __FILE__, __LINE__); } while (false) 
+#define ASSERT(X)                                                \
+  do {                                                           \
+    if (!(X))                                                    \
+      OutputDebugStringG("Assert failed: ", __FILE__, __LINE__); \
+  } while (false)
+#define TOL_ZERO(X)                                                \
+  do {                                                             \
+    if (fabs(X) > MDTOL)                                           \
+      OutputDebugStringG("Tol-Zero failed: ", __FILE__, __LINE__); \
+  } while (false)
+#define IF_TOL_ZERO(B, X)                                             \
+  do {                                                                \
+    if ((B) && (fabs(X) > MDTOL))                                     \
+      OutputDebugStringG("If-Tol-Zero failed: ", __FILE__, __LINE__); \
+  } while (false)
 
 #else
 
@@ -51,7 +64,5 @@ void OutputDebugStringG(const char* str0, const char* strf, int line1);
 #define IF_TOL_ZERO(B, X)
 
 #endif
-
-
 
 #endif

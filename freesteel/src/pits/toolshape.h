@@ -22,39 +22,45 @@
 #ifndef TOOLSHAPE_H
 #define TOOLSHAPE_H
 //////////////////////////////////////////////////////////////////////
-class ToolShape	
-{
-public:
-	double flatrad; // shaftrad - cornerrad 
-	double cornerrad; 
+class ToolShape {
+ public:
+  double flatrad;  // shaftrad - cornerrad
+  double cornerrad;
 
-	double sliceheight; 
-	int ntoolslices; 
+  double sliceheight;
+  int ntoolslices;
 
-	int nang; 
+  int nang;
 
-	ToolShape()
-        {
-            flatrad = 0;
-            cornerrad = 0;
-        }; 
+  ToolShape() {
+    flatrad = 0;
+    cornerrad = 0;
+  };
 
-	ToolShape(double lflatrad, double lcornerrad, double shaftlength, double lsliceheight) : 
-		flatrad(lflatrad), cornerrad(lcornerrad), sliceheight(lsliceheight), ntoolslices((int)((cornerrad + sliceheight) / sliceheight))
-			{ nang = 31;}; 
+  ToolShape(double lflatrad,
+            double lcornerrad,
+            double shaftlength,
+            double lsliceheight)
+      : flatrad(lflatrad),
+        cornerrad(lcornerrad),
+        sliceheight(lsliceheight),
+        ntoolslices((int)((cornerrad + sliceheight) / sliceheight)) {
+    nang = 31;
+  };
 
-	double RadAtHeight(double lz); 
+  double RadAtHeight(double lz);
 
-	void ConstructToolShape(vector< vector <P3> >& slcs);
-	void ConstructToolShape(class vtkPolyData* ppd, class vtkFloatArray* pdcontactsca); 
+  void ConstructToolShape(vector<vector<P3> >& slcs);
+  void ConstructToolShape(class vtkPolyData* ppd,
+                          class vtkFloatArray* pdcontactsca);
 
-	void Draw(const P3& iptpath, vector<PathXSeries>* pftpaths, int ipath, int iseg, const vector<P2>& bound);
-	void Draw(const P3& pt);
-	void DrawColourRange(const P3& iptpath, double z, double rad, const S1& rg);
-
-}; 
-
+  void Draw(const P3& iptpath,
+            vector<PathXSeries>* pftpaths,
+            int ipath,
+            int iseg,
+            const vector<P2>& bound);
+  void Draw(const P3& pt);
+  void DrawColourRange(const P3& iptpath, double z, double rad, const S1& rg);
+};
 
 #endif
-
-

@@ -25,88 +25,81 @@
 class AnimationFrame;
 
 // Define a new frame type
-class MainFrame: public wxFrame
-{
-public:
-    MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
-	~MainFrame(); 
+class MainFrame : public wxFrame {
+ public:
+  MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+  ~MainFrame();
 
-	void MakeMenues();
+  void MakeMenues();
 
-    void FileOpen(wxCommandEvent& event);
-    void OnExit(wxCommandEvent& event);
-    void OnMachiningRaster(wxCommandEvent& event);
-    void OnMachiningSlice(wxCommandEvent& event);
-    void OnMachiningAreaclear(wxCommandEvent& event);
-    void OnMachiningBoundingBox(wxCommandEvent& event);
-    void OnViewMaximize(wxCommandEvent& event);
-    void OnViewX(wxCommandEvent& event);
-    void OnViewY(wxCommandEvent& event);
-    void OnViewCentre(wxCommandEvent& event);
-    void OnActors(wxCommandEvent& event);
-    void OnUpdateActors(wxMenuEvent& event);
-    void OnAnimate(wxCommandEvent& event);
-    void OnUpdateAnimate(wxCommandEvent& event);
-    void UpdateAnimate();
-    void UpdateActors();
-    void OnKeyDown(wxKeyEvent &event);
-    void OnReplayFromStart(wxCommandEvent& event);
-    void OnReplayOneLevel(wxCommandEvent& event);
+  void FileOpen(wxCommandEvent& event);
+  void OnExit(wxCommandEvent& event);
+  void OnMachiningRaster(wxCommandEvent& event);
+  void OnMachiningSlice(wxCommandEvent& event);
+  void OnMachiningAreaclear(wxCommandEvent& event);
+  void OnMachiningBoundingBox(wxCommandEvent& event);
+  void OnViewMaximize(wxCommandEvent& event);
+  void OnViewX(wxCommandEvent& event);
+  void OnViewY(wxCommandEvent& event);
+  void OnViewCentre(wxCommandEvent& event);
+  void OnActors(wxCommandEvent& event);
+  void OnUpdateActors(wxMenuEvent& event);
+  void OnAnimate(wxCommandEvent& event);
+  void OnUpdateAnimate(wxCommandEvent& event);
+  void UpdateAnimate();
+  void UpdateActors();
+  void OnKeyDown(wxKeyEvent& event);
+  void OnReplayFromStart(wxCommandEvent& event);
+  void OnReplayOneLevel(wxCommandEvent& event);
 
-	void OnActivate(wxActivateEvent& event);
+  void OnActivate(wxActivateEvent& event);
 
-	wxMenu *actors_menu;
-        wxMenu *animate_menu;
-        int idAnimated;
+  wxMenu* actors_menu;
+  wxMenu* animate_menu;
+  int idAnimated;
 
-	class GeometryStuffTogether* GetGst() { return gst; };
-	AnimationFrame* aniframe;
+  class GeometryStuffTogether* GetGst() {
+    return gst;
+  };
+  AnimationFrame* aniframe;
 
-private:
-    
-    void CentreView(I1& xrg, I1& yrg, I1& zrg);
-    void MaximizeView();
-    void MachiningSlice(class GSTsurface *gstsurf, double zval, double toolrad, double     resolution);
+ private:
+  void CentreView(I1& xrg, I1& yrg, I1& zrg);
+  void MaximizeView();
+  void MachiningSlice(class GSTsurface* gstsurf,
+                      double zval,
+                      double toolrad,
+                      double resolution);
 
-    class GSTsurface* SelectedSurface() const;
-    class GSTtoolpath* SelectedBoundary() const;
+  class GSTsurface* SelectedSurface() const;
+  class GSTtoolpath* SelectedBoundary() const;
 
-private:
+ private:
   // Data members
-    class wxVTKRenderWindowInteractor* iren; 
-    class GeometryStuffTogether* gst; 
-    
-    DECLARE_EVENT_TABLE()
+  class wxVTKRenderWindowInteractor* iren;
+  class GeometryStuffTogether* gst;
+
+  DECLARE_EVENT_TABLE()
 };
 
 // Menubar IDs
-enum
-{
-	MENU_ACTORS = 100
-};
+enum { MENU_ACTORS = 100 };
 
 // Menu IDs
-enum
-{
-    DIALOGS_FILE_OPEN = 1,
-    DIALOG_VIEW_MAXIMIZE,
-	DIALOG_VIEW_X, 
-	DIALOG_VIEW_Y,
-    DIALOG_VIEW_CENTRE,
-    DIALOG_SURFACE_BOUNDING_BOX,
-	DIALOG_SLICE,
-	DIALOG_AREACLEAR,
+enum {
+  DIALOGS_FILE_OPEN = 1,
+  DIALOG_VIEW_MAXIMIZE,
+  DIALOG_VIEW_X,
+  DIALOG_VIEW_Y,
+  DIALOG_VIEW_CENTRE,
+  DIALOG_SURFACE_BOUNDING_BOX,
+  DIALOG_SLICE,
+  DIALOG_AREACLEAR,
 
-	MENU_ANIMATE,
-	DIALOG_BEGIN_ACTORS
+  MENU_ANIMATE,
+  DIALOG_BEGIN_ACTORS
 };
 
-enum
-{
-    MNU_FROMSTART=500,
-    MNU_ONELEVEL,
-    DIALOG_BEGIN_ANIMATE
-};
+enum { MNU_FROMSTART = 500, MNU_ONELEVEL, DIALOG_BEGIN_ANIMATE };
 
 #endif
-

@@ -23,84 +23,77 @@
 #define SurfXboxed__h
 
 ////////////////////////////////////////////////////////////////////////////////
-struct ckedgeX
-{
-	double zh; // highest z value in this bucket 
-	edgeX* edx; 
-	int idup; // -1 if no duplicates, otherwise points into the duplicates vector.  
+struct ckedgeX {
+  double zh;  // highest z value in this bucket
+  edgeX* edx;
+  int idup;  // -1 if no duplicates, otherwise points into the duplicates
+             // vector.
 
-	ckedgeX(double lzh, edgeX* pedx, int lidup) : 
-		zh(lzh), edx(pedx), idup(lidup) {;} 
-}; 
-
-
-////////////////////////////////////////////////////////////////////////////////
-struct cktriX
-{
-	double zh; // highest z value in this bucket 
-	triangX* trx; 
-	int idup; // -1 if no duplicates, otherwise points into the duplicates vector.  
-
-	cktriX(double lzh, triangX* ptrx, int lidup) : 
-		zh(lzh), trx(ptrx), idup(lidup) {;} 
-}; 
-
-
-////////////////////////////////////////////////////////////////////////////////
-struct bucketX
-{
-	vector<P3*> ckpoints; 
-	vector<ckedgeX> ckedges; 
-	vector<cktriX> cktriangs; 
+  ckedgeX(double lzh, edgeX* pedx, int lidup)
+      : zh(lzh), edx(pedx), idup(lidup) {
+    ;
+  }
 };
 
+////////////////////////////////////////////////////////////////////////////////
+struct cktriX {
+  double zh;  // highest z value in this bucket
+  triangX* trx;
+  int idup;  // -1 if no duplicates, otherwise points into the duplicates
+             // vector.
+
+  cktriX(double lzh, triangX* ptrx, int lidup)
+      : zh(lzh), trx(ptrx), idup(lidup) {
+    ;
+  }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+struct bucketX {
+  vector<P3*> ckpoints;
+  vector<ckedgeX> ckedges;
+  vector<cktriX> cktriangs;
+};
 
 //////////////////////////////////////////////////////////////////////
-class SurfXboxed
-{
-public: 
-	SurfX* psurfx; // this could be const.  
+class SurfXboxed {
+ public:
+  SurfX* psurfx;  // this could be const.
 
-	// dimensions of the buckets 
-	I1 gbxrg; 
-	I1 gbyrg; 
-	bool bGeoOutLeft; 
-	bool bGeoOutUp; 
-	bool bGeoOutRight; 
-	bool bGeoOutDown; 
+  // dimensions of the buckets
+  I1 gbxrg;
+  I1 gbyrg;
+  bool bGeoOutLeft;
+  bool bGeoOutUp;
+  bool bGeoOutRight;
+  bool bGeoOutDown;
 
+  Partition1 xpart;
+  vector<Partition1> yparts;
 
-	Partition1 xpart; 
-	vector<Partition1> yparts; 
+  // raw buckets (corresponding to the partitions).
+  vector<vector<bucketX> > buckets;
 
-	// raw buckets (corresponding to the partitions).  
-	vector< vector<bucketX> > buckets; 
+  // integer places where the duplicate counters are looked up.
+  vector<int> idups;
+  int maxidup;
 
-	// integer places where the duplicate counters are looked up.  
-	vector<int> idups; 
-	int maxidup; 
+  // raw case where all we have is the surface itself.
+  SurfXboxed(SurfX* lpsurfx) : psurfx(lpsurfx) { ; };
 
-	// raw case where all we have is the surface itself.  
-	SurfXboxed(SurfX* lpsurfx) : 
-		psurfx(lpsurfx) {;}; 
-		
-		void AddPointBucket(P3* pp); 
-		void AddEdgeBucket(edgeX* ped); 
-		void AddTriangBucket(triangX* ptr); 
-		void SortBuckets(); 
-	void BuildBoxes(double boxwidth); 
+  void AddPointBucket(P3* pp);
+  void AddEdgeBucket(edgeX* ped);
+  void AddTriangBucket(triangX* ptr);
+  void SortBuckets();
+  void BuildBoxes(double boxwidth);
 
-	// used to over-extend the range of boxes we search within 
-	double searchbox_epsilon; 
+  // used to over-extend the range of boxes we search within
+  double searchbox_epsilon;
 
-	// apply boxed triangles to a weave ray.  
-		void SliceFibreBox(int iu, int iv, class Ray_gen& rgen); 
-	void SliceUFibre(Ray_gen& rgen); 
-	void SliceVFibre(Ray_gen& rgen); 
-}; 
-
+  // apply boxed triangles to a weave ray.
+  void SliceFibreBox(int iu, int iv, class Ray_gen& rgen);
+  void SliceUFibre(Ray_gen& rgen);
+  void SliceVFibre(Ray_gen& rgen);
+};
 
 #endif
-
-
-

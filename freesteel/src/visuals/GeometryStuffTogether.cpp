@@ -43,39 +43,37 @@
 #include "visuals/gst.h"
 #include "visuals/gstsurface.h"
 
+///////////////////////////////////////////////////////////
+void GeometryStuffTogether::MakeRectBoundary(const I1& xrg,
+                                             const I1& yrg,
+                                             double z) {
+  GSTtoolpath* gstbound = new GSTtoolpath();
+  gstees.push_back(gstbound);
 
-/////////////////////////////////////////////////////////// 
-void GeometryStuffTogether::MakeRectBoundary(const I1& xrg, const I1& yrg, double z) 
-{
-	GSTtoolpath *gstbound = new GSTtoolpath();
-	gstees.push_back(gstbound);
+  gstbound->ftpaths.push_back(PathXSeries());
+  gstbound->ftpaths.back().z = z;
+  gstbound->ftpaths.back().Add(P2(xrg.lo, yrg.lo));
+  gstbound->ftpaths.back().Add(P2(xrg.hi, yrg.lo));
+  gstbound->ftpaths.back().Add(P2(xrg.hi, yrg.hi));
+  gstbound->ftpaths.back().Add(P2(xrg.lo, yrg.hi));
+  gstbound->ftpaths.back().Add(P2(xrg.lo, yrg.lo));
+  gstbound->ftpaths.back().Break();
 
-	gstbound->ftpaths.push_back(PathXSeries());
-	gstbound->ftpaths.back().z = z;
-	gstbound->ftpaths.back().Add(P2(xrg.lo, yrg.lo)); 
-	gstbound->ftpaths.back().Add(P2(xrg.hi, yrg.lo)); 
-	gstbound->ftpaths.back().Add(P2(xrg.hi, yrg.hi)); 
-	gstbound->ftpaths.back().Add(P2(xrg.lo, yrg.hi)); 
-	gstbound->ftpaths.back().Add(P2(xrg.lo, yrg.lo)); 
-	gstbound->ftpaths.back().Break(); 
+  gstbound->UpdateFromPax();
 
-	gstbound->UpdateFromPax();  
-
-	gstbound->AddToRenderer(&ren1); 
+  gstbound->AddToRenderer(&ren1);
 }
 
-/////////////////////////////////////////////////////////// 
-GeometryStuffTogether::GeometryStuffTogether(vtkRenderWindow* lrenWin) 
-{
-	renWin = lrenWin; 
-	ren1->GetActiveCamera()->ParallelProjectionOn(); 
-	ren1->SetBackground(0.1, 0.2, 0.4);
-	renWin->AddRenderer(&ren1);
-	renWin->SetSize(600, 500);
+///////////////////////////////////////////////////////////
+GeometryStuffTogether::GeometryStuffTogether(vtkRenderWindow* lrenWin) {
+  renWin = lrenWin;
+  ren1->GetActiveCamera()->ParallelProjectionOn();
+  ren1->SetBackground(0.1, 0.2, 0.4);
+  renWin->AddRenderer(&ren1);
+  renWin->SetSize(600, 500);
 }
 
-GeometryStuffTogether::~GeometryStuffTogether()
-{
-	for (int i = 0; i < gstees.size(); ++i)
-		delete gstees[i];
+GeometryStuffTogether::~GeometryStuffTogether() {
+  for (int i = 0; i < gstees.size(); ++i)
+    delete gstees[i];
 }

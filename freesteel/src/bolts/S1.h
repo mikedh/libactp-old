@@ -22,61 +22,68 @@
 #ifndef S1_H
 #define S1_H
 
+//////////////////////////////////////////////////////////////////////
+// an endpoint in the fibre.
+struct B1 {
+  double w;
+
+  bool blower;
+  bool binterncellbound;
+  int contournumber;
+
+  mutable int cutcode;
+
+  B1() { ; };
+  B1(double lw, bool lblower, bool lbinterncellbound = false)
+      : w(lw),
+        blower(lblower),
+        binterncellbound(lbinterncellbound),
+        contournumber(-1) {
+    ;
+  };
+
+  bool operator<(const B1& b) const { return (w < b.w); };
+};
 
 //////////////////////////////////////////////////////////////////////
-// an endpoint in the fibre.  
-struct B1
-{
-	double w; 
+// this is a fibre
+struct S1 : vector<B1> {
+  double wp;  // the perpendicular position.
+  I1 wrg;
 
-	bool blower; 
-	bool binterncellbound; 
-	int contournumber; 
+  int ftype;  // 1 for ufibre, 2 for vfibre
 
-	mutable int cutcode; 
+  void Merge(const I1& rg);
+  void Merge(double rglo,
+             bool binterncellboundlo,
+             double rghi,
+             bool binterncellboundhi);
+  void Minus(const I1& rg);
+  void Minus(double rglo,
+             bool binterncellboundlo,
+             double rghi,
+             bool binterncellboundhi);
 
-	B1() {;}; 
-	B1(double lw, bool lblower, bool lbinterncellbound = false) : 
-		w(lw), blower(lblower), binterncellbound(lbinterncellbound), contournumber(-1) {;}; 
+  pair<int, int> Loclohi(const I1& rg) const;
 
-	bool operator<(const B1& b) const 
-		{ return (w < b.w); }; 
-}; 
+  void Invert();
 
-//////////////////////////////////////////////////////////////////////
-// this is a fibre 
-struct S1 : vector<B1> 
-{
-	double wp; // the perpendicular position.  
-	I1 wrg; 
+  bool Check() const;
 
-	int ftype; // 1 for ufibre, 2 for vfibre
+  bool Contains(double lw) const;
+  I1 ContainsRG(double lw) const;
 
-	void Merge(const I1& rg); 
-	void Merge(double rglo, bool binterncellboundlo, double rghi, bool binterncellboundhi); 
-	void Minus(const I1& rg); 
-	void Minus(double rglo, bool binterncellboundlo, double rghi, bool binterncellboundhi);
+  void SetNew(double lwp, const I1& lwrg, int lftype) {
+    wp = lwp;
+    wrg = lwrg;
+    ftype = lftype;
+    clear();
+  };
 
-	pair<int, int> Loclohi(const I1& rg) const;
+  S1() { ; };
+  S1(double lwp, I1& lwrg, int lftype) { SetNew(lwp, lwrg, lftype); };
 
+  void SetAllCutCodes(int lcutcode);
+};
 
-	void Invert(); 
-
-	bool Check() const; 
-
-	bool Contains(double lw) const; 
-	I1 ContainsRG(double lw) const; 
-
-	void SetNew(double lwp, const I1& lwrg, int lftype)
-		{ wp = lwp; wrg = lwrg; ftype = lftype; clear(); }; 
-
-	S1() {;}; 
-	S1(double lwp, I1& lwrg, int lftype) 
-		{ SetNew(lwp, lwrg, lftype); }; 
-
-	void SetAllCutCodes(int lcutcode); 
-}; 
-
-
-#endif 
-
+#endif

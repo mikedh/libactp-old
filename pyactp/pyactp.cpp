@@ -13,7 +13,7 @@ static MachineParams params;
 static vector<PathXSeries> boundary;
 static vector<PathXSeries> toolpath;
 
-static void MakeRectBoundary(SurfX &sx, vector<PathXSeries> &b) {
+static void MakeRectBoundary(SurfX& sx, vector<PathXSeries>& b) {
   b.push_back(PathXSeries());
   b.back().z = sx.gzrg.hi + 1.0;
   b.back().Add(P2(sx.gxrg.lo, sx.gyrg.lo));
@@ -24,7 +24,7 @@ static void MakeRectBoundary(SurfX &sx, vector<PathXSeries> &b) {
   b.back().Break();
 }
 
-static int make_roughing(const char *filepath) {
+static int make_roughing(const char* filepath) {
   // clear the toolpath
   toolpath.clear();
 
@@ -33,7 +33,7 @@ static int make_roughing(const char *filepath) {
   sx.ReadStlFile(filepath);
   if (params.minz > sx.gzrg.lo)
     sx.gzrg.lo = params.minz;
-  sx.BuildComponents(); // compress thing
+  sx.BuildComponents();  // compress thing
 
   // make a rectangle boundary
   if (boundary.size() == 0) {
@@ -43,64 +43,64 @@ static int make_roughing(const char *filepath) {
   // make the roughing toolpath
   MakeCorerough(toolpath, sx, boundary[0], params);
 
-  return 0; // success
+  return 0;  // success
 }
 
-static PyObject *actp_makerough(PyObject *self, PyObject *args) {
-  char *filepath;
+static PyObject* actp_makerough(PyObject* self, PyObject* args) {
+  char* filepath;
   if (!PyArg_ParseTuple(args, "s", &filepath))
     return NULL;
 
   int result = make_roughing(filepath);
 
   // return int result
-  PyObject *pValue = PyLong_FromLong(result);
+  PyObject* pValue = PyLong_FromLong(result);
   Py_INCREF(pValue);
   return pValue;
 }
 
-static PyObject *actp_getnumpaths(PyObject *self, PyObject *args) {
-  PyObject *pValue = PyLong_FromLong(toolpath.size());
+static PyObject* actp_getnumpaths(PyObject* self, PyObject* args) {
+  PyObject* pValue = PyLong_FromLong(toolpath.size());
   Py_INCREF(pValue);
   return pValue;
 }
 
-static PyObject *actp_getnumpoints(PyObject *self, PyObject *args) {
+static PyObject* actp_getnumpoints(PyObject* self, PyObject* args) {
   int path_index;
   if (!PyArg_ParseTuple(args, "i", &path_index))
     return NULL;
 
-  PathXSeries &path = toolpath[path_index];
+  PathXSeries& path = toolpath[path_index];
 
-  PyObject *pValue = PyLong_FromLong(path.pths.size());
+  PyObject* pValue = PyLong_FromLong(path.pths.size());
   Py_INCREF(pValue);
   return pValue;
 }
 
-static PyObject *actp_getz(PyObject *self, PyObject *args) {
+static PyObject* actp_getz(PyObject* self, PyObject* args) {
   int path_index;
   if (!PyArg_ParseTuple(args, "i", &path_index))
     return NULL;
 
-  PathXSeries &path = toolpath[path_index];
+  PathXSeries& path = toolpath[path_index];
 
-  PyObject *pValue = PyFloat_FromDouble(path.z);
+  PyObject* pValue = PyFloat_FromDouble(path.z);
   Py_INCREF(pValue);
   return pValue;
 }
 
-static PyObject *actp_getpoint(PyObject *self, PyObject *args) {
+static PyObject* actp_getpoint(PyObject* self, PyObject* args) {
   int path_index, point_index;
   if (!PyArg_ParseTuple(args, "ii", &path_index, &point_index))
     return NULL;
 
-  PathXSeries &path = toolpath[path_index];
-  P2 &point = path.pths[point_index];
+  PathXSeries& path = toolpath[path_index];
+  P2& point = path.pths[point_index];
 
   // return point a tuple ( x, y )
-  PyObject *pTuple = PyTuple_New(2);
+  PyObject* pTuple = PyTuple_New(2);
   {
-    PyObject *pValue = PyFloat_FromDouble(point.u);
+    PyObject* pValue = PyFloat_FromDouble(point.u);
     if (!pValue) {
       Py_DECREF(pTuple);
       return NULL;
@@ -108,7 +108,7 @@ static PyObject *actp_getpoint(PyObject *self, PyObject *args) {
     PyTuple_SetItem(pTuple, 0, pValue);
   }
   {
-    PyObject *pValue = PyFloat_FromDouble(point.v);
+    PyObject* pValue = PyFloat_FromDouble(point.v);
     if (!pValue) {
       Py_DECREF(pTuple);
       return NULL;
@@ -120,69 +120,69 @@ static PyObject *actp_getpoint(PyObject *self, PyObject *args) {
   return pTuple;
 }
 
-static PyObject *actp_getnumbreaks(PyObject *self, PyObject *args) {
+static PyObject* actp_getnumbreaks(PyObject* self, PyObject* args) {
   int path_index;
   if (!PyArg_ParseTuple(args, "i", &path_index))
     return NULL;
 
-  PathXSeries &path = toolpath[path_index];
+  PathXSeries& path = toolpath[path_index];
 
-  PyObject *pValue = PyLong_FromLong(path.brks.size());
+  PyObject* pValue = PyLong_FromLong(path.brks.size());
   Py_INCREF(pValue);
   return pValue;
 }
 
-static PyObject *actp_getbreak(PyObject *self, PyObject *args) {
+static PyObject* actp_getbreak(PyObject* self, PyObject* args) {
   int path_index, break_index;
   if (!PyArg_ParseTuple(args, "ii", &path_index, &break_index))
     return NULL;
 
-  PathXSeries &path = toolpath[path_index];
+  PathXSeries& path = toolpath[path_index];
   int brk = path.brks[break_index];
 
-  PyObject *pValue = PyLong_FromLong(brk);
+  PyObject* pValue = PyLong_FromLong(brk);
   Py_INCREF(pValue);
   return pValue;
 }
 
-static PyObject *actp_getnumlinkpths(PyObject *self, PyObject *args) {
+static PyObject* actp_getnumlinkpths(PyObject* self, PyObject* args) {
   int path_index;
   if (!PyArg_ParseTuple(args, "i", &path_index))
     return NULL;
 
-  PathXSeries &path = toolpath[path_index];
+  PathXSeries& path = toolpath[path_index];
 
-  PyObject *pValue = PyLong_FromLong(path.linkpths.size());
+  PyObject* pValue = PyLong_FromLong(path.linkpths.size());
   Py_INCREF(pValue);
   return pValue;
 }
 
-static PyObject *actp_getnumlinkpoints(PyObject *self, PyObject *args) {
+static PyObject* actp_getnumlinkpoints(PyObject* self, PyObject* args) {
   int path_index, link_index;
   if (!PyArg_ParseTuple(args, "ii", &path_index, &link_index))
     return NULL;
 
-  PathXSeries &path = toolpath[path_index];
-  vector<P3> &link_path = path.linkpths[link_index];
+  PathXSeries& path = toolpath[path_index];
+  vector<P3>& link_path = path.linkpths[link_index];
 
-  PyObject *pValue = PyLong_FromLong(link_path.size());
+  PyObject* pValue = PyLong_FromLong(link_path.size());
   Py_INCREF(pValue);
   return pValue;
 }
 
-static PyObject *actp_getlinkpoint(PyObject *self, PyObject *args) {
+static PyObject* actp_getlinkpoint(PyObject* self, PyObject* args) {
   int path_index, link_index, point_index;
   if (!PyArg_ParseTuple(args, "iii", &path_index, &link_index, &point_index))
     return NULL;
 
-  PathXSeries &path = toolpath[path_index];
-  vector<P3> &link_path = path.linkpths[link_index];
-  P3 &point = link_path[point_index];
+  PathXSeries& path = toolpath[path_index];
+  vector<P3>& link_path = path.linkpths[link_index];
+  P3& point = link_path[point_index];
 
   // return point a tuple ( x, y, z )
-  PyObject *pTuple = PyTuple_New(3);
+  PyObject* pTuple = PyTuple_New(3);
   {
-    PyObject *pValue = PyFloat_FromDouble(point.x);
+    PyObject* pValue = PyFloat_FromDouble(point.x);
     if (!pValue) {
       Py_DECREF(pTuple);
       return NULL;
@@ -190,7 +190,7 @@ static PyObject *actp_getlinkpoint(PyObject *self, PyObject *args) {
     PyTuple_SetItem(pTuple, 0, pValue);
   }
   {
-    PyObject *pValue = PyFloat_FromDouble(point.y);
+    PyObject* pValue = PyFloat_FromDouble(point.y);
     if (!pValue) {
       Py_DECREF(pTuple);
       return NULL;
@@ -198,7 +198,7 @@ static PyObject *actp_getlinkpoint(PyObject *self, PyObject *args) {
     PyTuple_SetItem(pTuple, 1, pValue);
   }
   {
-    PyObject *pValue = PyFloat_FromDouble(point.z);
+    PyObject* pValue = PyFloat_FromDouble(point.z);
     if (!pValue) {
       Py_DECREF(pTuple);
       return NULL;
@@ -210,7 +210,7 @@ static PyObject *actp_getlinkpoint(PyObject *self, PyObject *args) {
   return pTuple;
 }
 
-static PyObject *actp_setleadoffdz(PyObject *self, PyObject *args) {
+static PyObject* actp_setleadoffdz(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -219,7 +219,7 @@ static PyObject *actp_setleadoffdz(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setleadofflen(PyObject *self, PyObject *args) {
+static PyObject* actp_setleadofflen(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -228,7 +228,7 @@ static PyObject *actp_setleadofflen(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setleadoffrad(PyObject *self, PyObject *args) {
+static PyObject* actp_setleadoffrad(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -237,7 +237,7 @@ static PyObject *actp_setleadoffrad(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setretractzheight(PyObject *self, PyObject *args) {
+static PyObject* actp_setretractzheight(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -246,7 +246,7 @@ static PyObject *actp_setretractzheight(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setleadoffsamplestep(PyObject *self, PyObject *args) {
+static PyObject* actp_setleadoffsamplestep(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -255,7 +255,7 @@ static PyObject *actp_setleadoffsamplestep(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_settoolcornerrad(PyObject *self, PyObject *args) {
+static PyObject* actp_settoolcornerrad(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -264,7 +264,7 @@ static PyObject *actp_settoolcornerrad(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_settoolflatrad(PyObject *self, PyObject *args) {
+static PyObject* actp_settoolflatrad(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -273,7 +273,7 @@ static PyObject *actp_settoolflatrad(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setsamplestep(PyObject *self, PyObject *args) {
+static PyObject* actp_setsamplestep(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -282,7 +282,7 @@ static PyObject *actp_setsamplestep(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setstepdown(PyObject *self, PyObject *args) {
+static PyObject* actp_setstepdown(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -291,7 +291,7 @@ static PyObject *actp_setstepdown(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setclearcuspheight(PyObject *self, PyObject *args) {
+static PyObject* actp_setclearcuspheight(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -300,7 +300,7 @@ static PyObject *actp_setclearcuspheight(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_settriangleweaveres(PyObject *self, PyObject *args) {
+static PyObject* actp_settriangleweaveres(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -309,7 +309,7 @@ static PyObject *actp_settriangleweaveres(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setflatradweaveres(PyObject *self, PyObject *args) {
+static PyObject* actp_setflatradweaveres(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -318,7 +318,7 @@ static PyObject *actp_setflatradweaveres(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setdchangright(PyObject *self, PyObject *args) {
+static PyObject* actp_setdchangright(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -327,7 +327,7 @@ static PyObject *actp_setdchangright(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setdchangrightoncontour(PyObject *self, PyObject *args) {
+static PyObject* actp_setdchangrightoncontour(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -336,7 +336,7 @@ static PyObject *actp_setdchangrightoncontour(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setdchangleft(PyObject *self, PyObject *args) {
+static PyObject* actp_setdchangleft(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -345,7 +345,7 @@ static PyObject *actp_setdchangleft(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setdchangefreespace(PyObject *self, PyObject *args) {
+static PyObject* actp_setdchangefreespace(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -354,7 +354,7 @@ static PyObject *actp_setdchangefreespace(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setsidecutdisplch(PyObject *self, PyObject *args) {
+static PyObject* actp_setsidecutdisplch(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -363,7 +363,7 @@ static PyObject *actp_setsidecutdisplch(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setfcut(PyObject *self, PyObject *args) {
+static PyObject* actp_setfcut(PyObject* self, PyObject* args) {
   int i;
   if (!PyArg_ParseTuple(args, "i", &i))
     return NULL;
@@ -372,7 +372,7 @@ static PyObject *actp_setfcut(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setfretract(PyObject *self, PyObject *args) {
+static PyObject* actp_setfretract(PyObject* self, PyObject* args) {
   int i;
   if (!PyArg_ParseTuple(args, "i", &i))
     return NULL;
@@ -381,7 +381,7 @@ static PyObject *actp_setfretract(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setthintol(PyObject *self, PyObject *args) {
+static PyObject* actp_setthintol(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -390,7 +390,7 @@ static PyObject *actp_setthintol(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setstartpoint(PyObject *self, PyObject *args) {
+static PyObject* actp_setstartpoint(PyObject* self, PyObject* args) {
   double x, y, vx, vy;
   if (!PyArg_ParseTuple(args, "dddd", &x, &y, &vx, &vy))
     return NULL;
@@ -404,7 +404,7 @@ static PyObject *actp_setstartpoint(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_setminz(PyObject *self, PyObject *args) {
+static PyObject* actp_setminz(PyObject* self, PyObject* args) {
   double d;
   if (!PyArg_ParseTuple(args, "d", &d))
     return NULL;
@@ -413,7 +413,7 @@ static PyObject *actp_setminz(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_boundaryclear(PyObject *self, PyObject *args) {
+static PyObject* actp_boundaryclear(PyObject* self, PyObject* args) {
   double d = 0.0;
   PyArg_ParseTuple(args, "d", &d);
   boundary.clear();
@@ -423,7 +423,7 @@ static PyObject *actp_boundaryclear(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_boundaryadd(PyObject *self, PyObject *args) {
+static PyObject* actp_boundaryadd(PyObject* self, PyObject* args) {
   double x, y;
   if (!PyArg_ParseTuple(args, "dd", &x, &y))
     return NULL;
@@ -432,13 +432,13 @@ static PyObject *actp_boundaryadd(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_boundarybreak(PyObject *self, PyObject *args) {
+static PyObject* actp_boundarybreak(PyObject* self, PyObject* args) {
   // i'm not sure yet if you need one of these at the end of every boundary
   boundary.back().Break();
   Py_RETURN_NONE;
 }
 
-static PyObject *actp_resetparams(PyObject *self, PyObject *args) {
+static PyObject* actp_resetparams(PyObject* self, PyObject* args) {
   // reset all the parameters to their default values
   params = MachineParams();
 
@@ -485,23 +485,23 @@ static PyMethodDef actp_methods[] = {
     {NULL, NULL, 0, NULL}};
 
 struct module_state {
-  PyObject *error;
+  PyObject* error;
 };
 
-#define GETSTATE(m) ((struct module_state *)PyModule_GetState(m))
+#define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
 
-static PyObject *error_out(PyObject *m) {
-  struct module_state *st = GETSTATE(m);
+static PyObject* error_out(PyObject* m) {
+  struct module_state* st = GETSTATE(m);
   PyErr_SetString(st->error, "something bad happened");
   return NULL;
 }
 
-static int actp_traverse(PyObject *m, visitproc visit, void *arg) {
+static int actp_traverse(PyObject* m, visitproc visit, void* arg) {
   Py_VISIT(GETSTATE(m)->error);
   return 0;
 }
 
-static int actp_clear(PyObject *m) {
+static int actp_clear(PyObject* m) {
   Py_CLEAR(GETSTATE(m)->error);
   return 0;
 }
@@ -519,11 +519,11 @@ static struct PyModuleDef moduledef = {PyModuleDef_HEAD_INIT,
 #define INITERROR return NULL
 
 PyMODINIT_FUNC PyInit_actp(void) {
-  PyObject *module = PyModule_Create(&moduledef);
+  PyObject* module = PyModule_Create(&moduledef);
 
   if (module == NULL)
     INITERROR;
-  struct module_state *st = GETSTATE(module);
+  struct module_state* st = GETSTATE(module);
 
   st->error = PyErr_NewException("actp.Error", NULL, NULL);
   if (st->error == NULL) {
