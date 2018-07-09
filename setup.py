@@ -14,12 +14,10 @@ class BuildMake(setuptools.command.build_py.build_py):
         setuptools.command.build_py.build_py.run(self)
 
 
-s = setuptools.setup(
-    cmdclass={
-        'build_py': BuildMake
-    },
+setuptools.setup(
+    cmdclass={'build_py': BuildMake},
     name='pyactp',
-    version='0.1.0',
+    version='0.1.1',
     description='Python bindings for ACTP',
     long_description='Python bindings for the Adaptive Clearing Tool Path library',
     url='https://github.com/mikedh/pyactp',
@@ -28,7 +26,7 @@ s = setuptools.setup(
     license="GPL2",
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'License :: OSI Approved :: GPL 2.0 License',
+        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
