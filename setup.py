@@ -27,7 +27,7 @@ with open('pyactp/dummy.cpp', 'w') as f:
 setuptools.setup(
     cmdclass={'build_py': BuildMake},
     name='pyactp',
-    version='0.1.8',
+    version='0.1.9',
     description='Python bindings for ACTP',
     long_description='Python bindings for the Adaptive Clearing Tool Path Library',
     url='https://github.com/mikedh/pyactp',
