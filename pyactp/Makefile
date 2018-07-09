@@ -25,15 +25,6 @@ clean:
 	@-rm -f $(LIBOBJS)
 	@-rm -f $(LIBOUT)
 
-install: $(LIBOUT)
-	strip $^
-	chmod 644 $^
-	mkdir -p $(DESTDIR)$(PREFIX)/lib/python`python -c "import sys; print sys.version[:3]"`/dist-packages/
-	install $^ $(DESTDIR)$(PREFIX)/lib/python`python -c "import sys; print sys.version[:3]"`/dist-packages/
-
-test:
-	python sample.py
-
 Partition1.o: ../freesteel/src/bolts/Partition1.cpp
 	$(CC) -c $? ${CFLAGS} -o $@
 

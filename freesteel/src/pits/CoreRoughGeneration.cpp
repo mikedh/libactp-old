@@ -340,16 +340,15 @@ int CoreRoughGeneration::TrackLink(const vector<P2>& lnk2D,
                                    S2weaveCellLinearCutTraverse wclink,
                                    bool bFromEnd,
                                    const MachineParams& params) {
-  bool bOnStock = false;
+  // bool bOnStock = false;
   int ix = bFromEnd ? (lnk2D.size() - 2) : 1;
   for (; (bFromEnd ? (ix > 0) : (ix < (int)(lnk2D.size()) - 1));
        ix += (bFromEnd ? -1 : 1)) {
-    //		TOL_ZERO((lnk2D[bFromEnd ? (ix) : (ix - 1)] -
-    // wclink.ptcp).Len());
+//		TOL_ZERO((lnk2D[bFromEnd ? (ix) : (ix - 1)] -
+// wclink.ptcp).Len());
+#ifdef MDEBUG
     P2 Nvbearing =
         bFromEnd ? (lnk2D[ix - 1] - lnk2D[ix]) : (lnk2D[ix] - lnk2D[ix - 1]);
-
-#ifdef MDEBUG
     double Nvd = Nvbearing.Len();
     double lNvd = wclink.FollowBearing(Nvbearing / Nvd, Nvd);
 #endif
@@ -371,7 +370,7 @@ int CoreRoughGeneration::TrackLink(const vector<P2>& lnk2D,
       if (res.empty())
         CircleIntersectNew(res, lnk2D[ix], trad, tsbound, pathxb, trad);
       if (!res.empty()) {
-        bOnStock = true;
+        // bOnStock = true;
         return (bFromEnd ? ix - 1 : ix);
       }
     }
