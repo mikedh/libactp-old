@@ -1,22 +1,29 @@
+"""
+An example which makes a roughing pass on a mesh of
+a truncated cone, and exports basic G- code.
+"""
 import pyactp
 
 with open("test.tap", 'w') as f_out:
     f_out.write("G90 G21 G17\n")
-    pyactp.makerough('models/cone.stl')
+    pyactp.makerough('../models/cone.stl')
 
-    npaths = pyactp.getnumpaths()
-    for path in range(0, npaths):
+
+    for path in range(pyactp.getnumpaths()):
         npoints = pyactp.getnumpoints(path)
         nbreaks = pyactp.getnumbreaks(path)
         nlinkpaths = pyactp.getnumlinkpths(path)
+
         z = pyactp.getz(path)
         start_pos = 0
         first_z_done = False
+      
         for brk in range(0, nbreaks):
             brkpos = pyactp.getbreak(path, brk)
             for point in range(start_pos, brkpos):
                 x, y = pyactp.getpoint(path, point)
                 #feed(x, y, z)
+                curve.append([x,y,z])
                 if first_z_done == False:
                     f_out.write("G0 X" +
                                 str(' %.4f' % x) + " Y " +

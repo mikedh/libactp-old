@@ -10,8 +10,9 @@ class BuildMake(setuptools.command.build_py.build_py):
     to contemplate.
     """
     def run(self):
-        # just run Makefile
+        # just run Makefile, cleaning first
         subprocess.check_call(['make', '-C', 'pyactp', 'clean'])
+        # then building: should produce pyactp/actp.so
         subprocess.check_call(['make', '-C', 'pyactp'])
         # call super
         setuptools.command.build_py.build_py.run(self)
@@ -27,7 +28,7 @@ with open('pyactp/dummy.cpp', 'w') as f:
 setuptools.setup(
     cmdclass={'build_py': BuildMake},
     name='pyactp',
-    version='0.1.9',
+    version='0.1.10',
     description='Python bindings for ACTP',
     long_description='Python bindings for the Adaptive Clearing Tool Path Library',
     url='https://github.com/mikedh/pyactp',
@@ -46,5 +47,6 @@ setuptools.setup(
     keywords='actp milling toolpath',
     packages=['pyactp'],
     package_data={'pyactp': ['actp.so']},
-    ext_modules=[setuptools.Extension('pyactp.dummy', ['pyactp/dummy.cpp'])]
+    ext_modules=[setuptools.Extension('pyactp.dummy',
+                                      ['pyactp/dummy.cpp'])]
 )
