@@ -6,7 +6,6 @@ class BuildMake(setuptools.command.build_py.build_py):
     """
     Custom build command which just calls Makefile.
     """
-
     def run(self):
         # just run Makefile
         subprocess.check_call(['make', '-C', 'pyactp', 'clean'])
@@ -15,14 +14,14 @@ class BuildMake(setuptools.command.build_py.build_py):
         setuptools.command.build_py.build_py.run(self)
 
 
-setuptools.setup(
+s = setuptools.setup(
     cmdclass={
         'build_py': BuildMake
     },
     name='pyactp',
     version='0.1.0',
     description='Python bindings for ACTP',
-    long_description='Python bindings for the Adaptive Clearing Tool Path libaray',
+    long_description='Python bindings for the Adaptive Clearing Tool Path library',
     url='https://github.com/mikedh/pyactp',
     author='Michael Dawson-Haggerty',
     author_email='mik3dh@gmail.com',
@@ -37,5 +36,6 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
     ],
     keywords='actp milling toolpath',
-    packages=['pyactp']
+    packages=['pyactp'],
+    package_data={'pyactp': ['actp.so']}
 )

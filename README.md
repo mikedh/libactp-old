@@ -1,5 +1,4 @@
 # pyactp
------------
 
 A fork of libactp updated for Python 3 on Linux.
 
