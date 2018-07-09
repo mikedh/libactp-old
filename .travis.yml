@@ -4,7 +4,7 @@ env:
     - CIBW_TEST_REQUIRES="nose2"
     - CIBW_TEST_COMMAND="cd {project}/tests && nose2"
     - CIBW_SKIP="cp27-*"
-    - TWINE_USERNAME="mikedh"
+    - TWINE_USERNAME=mikedh
 matrix:
   include:
     - dist: trusty
