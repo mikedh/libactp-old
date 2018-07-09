@@ -17,7 +17,7 @@ class BuildMake(setuptools.command.build_py.build_py):
 setuptools.setup(
     cmdclass={'build_py': BuildMake},
     name='pyactp',
-    version='0.1.6',
+    version='0.1.7',
     description='Python bindings for ACTP',
     long_description='Python bindings for the Adaptive Clearing Tool Path Library',
     url='https://github.com/mikedh/pyactp',
@@ -35,5 +35,6 @@ setuptools.setup(
     ],
     keywords='actp milling toolpath',
     packages=['pyactp'],
-    package_data={'pyactp': ['actp.so']}
+    package_data={'pyactp': ['actp.so']},
+    ext_modules=[setuptools.Extension("pyactp.actp", [])]
 )
