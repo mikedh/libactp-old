@@ -17,13 +17,13 @@ class BuildMake(setuptools.command.build_py.build_py):
 setuptools.setup(
     cmdclass={'build_py': BuildMake},
     name='pyactp',
-    version='0.1.2',
+    version='0.1.3',
     description='Python bindings for ACTP',
     long_description='Python bindings for the Adaptive Clearing Tool Path Library',
     url='https://github.com/mikedh/pyactp',
     author='Michael Dawson-Haggerty',
     author_email='mik3dh@gmail.com',
-    license="GPL2",
+    license="GPL",
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',

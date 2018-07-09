@@ -6,8 +6,8 @@ HOME	= .
 CXX     = g++
 CC      = gcc
 LD      = g++
-LDFLAGS = -shared -rdynamic `python3-config --ldflags`
-LIBS    = -lstdc++ `python3-config --libs`
+LDFLAGS = -shared -rdynamic `python -c 'import sysconfig; print(sysconfig.get_config_vars("LDFLAGS")[0],end="")'`
+LIBS    = -lstdc++ `python -c 'import sysconfig; print(sysconfig.get_config_vars("LIBS")[0],end="")'`
 CFLAGS  = -Wall -I/usr/include `python3-config --includes` -I./ -I../freesteel/src -g -fPIC
 
 LIBNAME	= actp
