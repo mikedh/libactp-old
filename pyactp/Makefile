@@ -3,9 +3,9 @@
 
 PREFIX	= /usr/local
 HOME	= .
-CXX     = clang++
-CC      = clang
-LD      = clang++
+CXX     = g++
+CC      = gcc
+LD      = g++
 LDFLAGS = -shared -rdynamic `python3-config --ldflags`
 LIBS    = -lstdc++ `python3-config --libs`
 CFLAGS  = -Wall -I/usr/include `python3-config --includes` -I./ -I../freesteel/src -g -fPIC
