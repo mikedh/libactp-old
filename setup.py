@@ -17,10 +17,10 @@ class BuildMake(setuptools.command.build_py.build_py):
         setuptools.command.build_py.build_py.run(self)
 
 # since we are using a regular Makefile:
-# we are going to create a dummy source file that setuptools
-# can build to feel proud of itself.
-# if we don't do this the magical CI pipeline tags images
-# as universal rather than platform specific
+# we are going to create a dummy source file that
+# setuptools can build to feel proud of itself.
+# if we don't do this the magical CI pipeline tags
+# images as universal rather than platform specific
 with open('pyactp/dummy.cpp', 'w') as f:
     f.write('int main(){return 0;}')
 
