@@ -1,27 +1,23 @@
 env:
   global:
-    - CIBW_BEFORE_BUILD="yum install -y clang"
-    - CIBW_TEST_REQUIRES="nose2"
-    - CIBW_TEST_COMMAND="cd {project}/tests && nose2"
-    - CIBW_SKIP="cp27-*"
-    - TWINE_USERNAME=mikedh
+  - CIBW_TEST_REQUIRES="nose2"
+  - CIBW_TEST_COMMAND="cd {project}/tests && nose2"
+  - CIBW_SKIP="cp27-*"
+  - TWINE_USERNAME=mikedh
+  - secure: RwiL3Q+SoQ/Ju6NXVXJK/BoeLZrb2gCdmvki1FNvWo1N+SiR6TAG4fGWOZ6zwi9yKoHqOxY9pTA/gd8JRWK8zH/80xh7LBztkTLNnB0ge/KCEzz4QVW925JQCy38v/F6DQQ3Tfb771jQYFKgIvPuOALd5THklc3DNdanX9erVJWb1jcrCT6G5OkYyyAvqejNRymVnA/lF9cAtnKlXxu19ywggj9BHprmITWl+iYUmYTPrrurNAvOs3l2IShWD2LeSRup9ghuL/CkjRGzhJ6ueZlFOHOANrt/eJ6pcWIk6eBr86cxWmPi9hQGnU2PwUq1lIi7fONVQ/c2MJkJF4U8IJ096eq4AXiYBopynTlt0C311WPcP5fyOEYvsrDCq7NH/i3FD5oXsV0qr5zhdYWAtbuxYj/vIxS38lYVu8jNrcH3/KMN7gk353bouNc61yl/3E3uOjNhcmUI5RE6E/VIOacGoOkdeiKApqVXO/koLrXvn3jDEH8u3SpoAl0ksfTnJyHAc/z349Fa67JFJVWZXjKmdKHJFLTMuluUaQfZVFKjp0C1TUvyJioYVHiYtWEED/mGQmzrdVpMjmcU3vKLm8TuODoCbUBiG1bADPMgNrmH5e79ockSp9X97QqsuYavWw1FVu/M8/PH10p60gr/BVcvyH3mH1lS1wyn3sqSRJU=
 matrix:
   include:
-    - dist: trusty
-      sudo: required
-      language: python
-      python: "3.6"
-      services:
-        - docker
+  - dist: trusty
+    sudo: required
+    language: python
+    python: '3.6'
+    services:
+    - docker
 install:
-  # Python 3 is needed to run cibuildwheel 
-  - if [ "${TRAVIS_OS_NAME:-}" == "osx" ]; then
-      brew install python3;
-    fi
-  # Install cibuildwheel using pip3 to make sure Python 3 is used.
-  - pip3 install cibuildwheel
+- if [ "${TRAVIS_OS_NAME:-}" == "osx" ]; then brew install python3; fi
+- pip3 install cibuildwheel
 script:
-  - pip install cibuildwheel==0.9.2
-  - cibuildwheel --output-dir wheelhouse
-  - python -m pip install twine
-  - python -m twine upload wheelhouse/*.whl
+- pip install cibuildwheel==0.9.2
+- cibuildwheel --output-dir wheelhouse
+- python -m pip install twine
+- python -m twine upload wheelhouse/*.whl
