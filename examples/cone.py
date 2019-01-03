@@ -1,44 +1,34 @@
+"""
+An example which makes a roughing pass on a mesh of
+a truncated cone, and exports basic G- code.
+"""
 import pyactp
 import trimesh
 
 import numpy as np
 
 if __name__ == '__main__':
-    file_name = '../models/isogrid.STL'
 
-    # load the mesh
-    mesh = trimesh.load(file_name)
+    file_name = '../models/cone.stl'
 
-    # set a bunch of parameters, badly
-    # probably the tool radius?
-    pyactp.settoolflatrad(1)
-
-    # presumably the minimum Z level to step down to
-    pyactp.setminz(mesh.bounds[0][2])
-
-    # possibly the top of parts, the "clearance plane" height
-    pyactp.setclearcuspheight(mesh.bounds[1][2])
-
-    # possibly the distance in Z to traverse every step
-    pyactp.setstepdown(2)
-
-    # make a tool path
     pyactp.makerough(file_name)
 
     curves = []
-    npaths = pyactp.getnumpaths()
-    for path in range(0, npaths):
+    for path in range(pyactp.getnumpaths()):
         npoints = pyactp.getnumpoints(path)
         nbreaks = pyactp.getnumbreaks(path)
         nlinkpaths = pyactp.getnumlinkpths(path)
+
         z = pyactp.getz(path)
         start_pos = 0
         first_z_done = False
+
         curves.append([])
         for brk in range(0, nbreaks):
             brkpos = pyactp.getbreak(path, brk)
             for point in range(start_pos, brkpos):
                 x, y = pyactp.getpoint(path, point)
+
                 curves[-1].append([x, y, z])
             start_pos = brkpos
             nlinkpoints = pyactp.getnumlinkpoints(path, brk)
@@ -47,6 +37,7 @@ if __name__ == '__main__':
                 curves[-1].append([x, y, z])
 
     # visualize the toolpaths and mesh in a pyglet window
+    mesh = trimesh.load(file_name)
     viz = [trimesh.load_path(np.array(c)) for c in curves if len(c) > 0]
     viz.append(mesh)
     trimesh.Scene(viz).show()
